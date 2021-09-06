@@ -90,12 +90,12 @@ void AUnrealCodeLabCharacter::OnResetVR()
 
 void AUnrealCodeLabCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
 {
-		Jump();
+	Jump();
 }
 
 void AUnrealCodeLabCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
 {
-		StopJumping();
+	StopJumping();
 }
 
 void AUnrealCodeLabCharacter::TurnAtRate(float Rate)
