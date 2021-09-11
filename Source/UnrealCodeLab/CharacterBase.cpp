@@ -43,16 +43,6 @@ void ACharacterBase::OnManaChanged(float Mana, float MaxMana)
 	BP_OnManaChanged(Mana, MaxMana);
 }
 
-void ACharacterBase::InitBaseAttributes()
-{
-	CharacterAttributeSet->InitHealth(BaseHealth);
-	CharacterAttributeSet->InitMaxHealth(BaseMaxHealth);
-	CharacterAttributeSet->InitMana(BaseMana);
-	CharacterAttributeSet->InitMaxMana(BaseMaxMana);
-	CharacterAttributeSet->InitAttack(BaseAttack);
-	CharacterAttributeSet->InitDefense(BaseDefense);
-}
-
 void ACharacterBase::GainAbility(TSubclassOf<UGameplayAbility> Ability)
 {
 	if (AbilitySystemComponent)

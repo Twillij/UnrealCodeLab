@@ -29,21 +29,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int TeamID = 0;
 
-	// Base attributes are used for initialising attributes from the editor
-	// The base attributes can be set by calling the InitBaseAttributes funtion
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Base Attributes", meta = (DisplayName = "Health"))
-	float BaseHealth = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Base Attributes", meta = (DisplayName = "MaxHealth"))
-	float BaseMaxHealth = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Base Attributes", meta = (DisplayName = "Mana"))
-	float BaseMana = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Base Attributes", meta = (DisplayName = "MaxMana"))
-	float BaseMaxMana = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Base Attributes", meta = (DisplayName = "Attack"))
-	float BaseAttack = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Base Attributes", meta = (DisplayName = "Defense"))
-	float BaseDefense = 0;
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -65,15 +50,11 @@ public:
 	UFUNCTION()
 	void OnManaChanged(float Mana, float MaxMana);
 
-	// Initialises the gameplay attributes in the attribute set using the base attribute variables
-	UFUNCTION(BlueprintCallable)
-	void InitBaseAttributes();
-
 	// Grants the ability system component an ability
 	UFUNCTION(BlueprintCallable)
 	void GainAbility(TSubclassOf<UGameplayAbility> Ability);
 
-	// Blueprint implementable events that are called when certain gameplay attribute are changed
+	// Blueprint implementable events that are called when certain gameplay attributes are changed
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnHealthChanged"))
 	void BP_OnHealthChanged(float Health, float MaxHealth);
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnManaChanged"))

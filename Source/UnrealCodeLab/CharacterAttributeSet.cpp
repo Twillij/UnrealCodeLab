@@ -18,3 +18,13 @@ void UCharacterAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModC
 		OnManaChange.Broadcast(GetMana(), GetMaxMana());
 	}
 }
+
+void UCharacterAttributeSet::InitBaseAttributes()
+{
+	InitHealth(BaseHealth);
+	InitMaxHealth(BaseMaxHealth);
+	InitMana(BaseMana);
+	InitMaxMana(BaseMaxMana);
+	InitAttack(BaseAttack);
+	InitDefense(BaseDefense);
+}

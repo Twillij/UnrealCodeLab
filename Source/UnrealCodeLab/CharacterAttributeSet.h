@@ -26,31 +26,50 @@ public:
 	FOnHealthChangeDelegate OnHealthChange;
 	FOnManaChangeDelegate OnManaChange;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	// Base attributes are used for initialising attributes from the editor
+	// The base attributes can be set by calling the InitBaseAttributes funtion
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Base Attributes")
+	float BaseHealth = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Base Attributes")
+	float BaseMaxHealth = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Base Attributes")
+	float BaseMana = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Base Attributes")
+	float BaseMaxMana = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Base Attributes")
+	float BaseAttack = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Base Attributes")
+	float BaseDefense = 0;
+
+	UPROPERTY(BlueprintReadWrite)
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UCharacterAttributeSet, Health);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite)
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UCharacterAttributeSet, MaxHealth);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite)
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UCharacterAttributeSet, Mana);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite)
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS(UCharacterAttributeSet, MaxMana);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite)
 	FGameplayAttributeData Attack;
 	ATTRIBUTE_ACCESSORS(UCharacterAttributeSet, Attack);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite)
 	FGameplayAttributeData Defense;
 	ATTRIBUTE_ACCESSORS(UCharacterAttributeSet, Defense);
 
 public:
 	// Called after a gameplay effect is executed successfully
 	void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+
+	// Initialises the gameplay attributes in the attribute set using the base attribute variables
+	UFUNCTION(BlueprintCallable)
+	void InitBaseAttributes();
 };
