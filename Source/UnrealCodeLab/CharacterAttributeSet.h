@@ -23,6 +23,9 @@ public:
 	// Can be used to initialize attributes
 	UCharacterAttributeSet() {}
 
+	FOnHealthChangeDelegate OnHealthChange;
+	FOnManaChangeDelegate OnManaChange;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UCharacterAttributeSet, Health);
@@ -48,5 +51,6 @@ public:
 	ATTRIBUTE_ACCESSORS(UCharacterAttributeSet, Defense);
 
 public:
+	// Called after a gameplay effect is executed successfully
 	void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 };

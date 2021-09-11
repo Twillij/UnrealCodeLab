@@ -17,44 +17,65 @@ public:
 	// Sets default values for this character's properties
 	ACharacterBase();
 
+	// Component required for the gameplay ability system
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UAbilitySystemComponent* AbilitySystemComponent;
 
+	// Attribute set containing all the character gameplay variables
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UCharacterAttributeSet* CharacterAttributeSet;
 
-	// Base attribute variables are used for initializing attributes from the editor
+	// Identifies a character's team and their behaviour towards other teams
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int TeamID = 0;
+
+	// Base attributes are used for initialising attributes from the editor
 	// The base attributes can be set by calling the InitBaseAttributes funtion
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Base Attributes")
-	float Health = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Base Attributes")
-	float MaxHealth = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Base Attributes")
-	float Mana = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Base Attributes")
-	float MaxMana = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Base Attributes")
-	float Attack = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Base Attributes")
-	float Defense = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Base Attributes", meta = (DisplayName = "Health"))
+	float BaseHealth = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Base Attributes", meta = (DisplayName = "MaxHealth"))
+	float BaseMaxHealth = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Base Attributes", meta = (DisplayName = "Mana"))
+	float BaseMana = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Base Attributes", meta = (DisplayName = "MaxMana"))
+	float BaseMaxMana = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Base Attributes", meta = (DisplayName = "Attack"))
+	float BaseAttack = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Base Attributes", meta = (DisplayName = "Defense"))
+	float BaseDefense = 0;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
-	// override the purely virtual function in the interface
+	// Override function for the purely virtual function in the interface
 	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
+	// Called when certain gameplay attributes are changed
+	// Also calls the corresponding blueprint implementable events
+	UFUNCTION()
+	void OnHealthChanged(float Health, float MaxHealth);
+	UFUNCTION()
+	void OnManaChanged(float Mana, float MaxMana);
+
+	// Initialises the gameplay attributes in the attribute set using the base attribute variables
 	UFUNCTION(BlueprintCallable)
 	void InitBaseAttributes();
 
+	// Grants the ability system component an ability
 	UFUNCTION(BlueprintCallable)
 	void GainAbility(TSubclassOf<UGameplayAbility> Ability);
+
+	// Blueprint implementable events that are called when certain gameplay attribute are changed
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnHealthChanged"))
+	void BP_OnHealthChanged(float Health, float MaxHealth);
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnManaChanged"))
+	void BP_OnManaChanged(float Mana, float MaxMana);
 };

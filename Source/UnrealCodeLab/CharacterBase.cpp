@@ -33,14 +33,24 @@ UAbilitySystemComponent* ACharacterBase::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
+void ACharacterBase::OnHealthChanged(float Health, float MaxHealth)
+{
+	BP_OnHealthChanged(Health, MaxHealth);
+}
+
+void ACharacterBase::OnManaChanged(float Mana, float MaxMana)
+{
+	BP_OnManaChanged(Mana, MaxMana);
+}
+
 void ACharacterBase::InitBaseAttributes()
 {
-	CharacterAttributeSet->InitHealth(Health);
-	CharacterAttributeSet->InitMaxHealth(MaxHealth);
-	CharacterAttributeSet->InitMana(Mana);
-	CharacterAttributeSet->InitMaxMana(MaxMana);
-	CharacterAttributeSet->InitAttack(Attack);
-	CharacterAttributeSet->InitDefense(Defense);
+	CharacterAttributeSet->InitHealth(BaseHealth);
+	CharacterAttributeSet->InitMaxHealth(BaseMaxHealth);
+	CharacterAttributeSet->InitMana(BaseMana);
+	CharacterAttributeSet->InitMaxMana(BaseMaxMana);
+	CharacterAttributeSet->InitAttack(BaseAttack);
+	CharacterAttributeSet->InitDefense(BaseDefense);
 }
 
 void ACharacterBase::GainAbility(TSubclassOf<UGameplayAbility> Ability)
