@@ -1,7 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "UnrealCodeLabGameMode.h"
-#include "UnrealCodeLabCharacter.h"
+#include "PlayerCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 
 AUnrealCodeLabGameMode::AUnrealCodeLabGameMode()

@@ -1,6 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "UnrealCodeLabCharacter.h"
+#include "PlayerCharacter.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -10,9 +10,9 @@
 #include "GameFramework/SpringArmComponent.h"
 
 //////////////////////////////////////////////////////////////////////////
-// AUnrealCodeLabCharacter
+// APlayerCharacter
 
-AUnrealCodeLabCharacter::AUnrealCodeLabCharacter()
+APlayerCharacter::APlayerCharacter()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
@@ -50,34 +50,34 @@ AUnrealCodeLabCharacter::AUnrealCodeLabCharacter()
 //////////////////////////////////////////////////////////////////////////
 // Input
 
-void AUnrealCodeLabCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
+void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	// Set up gameplay key bindings
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
-	PlayerInputComponent->BindAxis("MoveForward", this, &AUnrealCodeLabCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &AUnrealCodeLabCharacter::MoveRight);
+	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
 
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
 	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("TurnRate", this, &AUnrealCodeLabCharacter::TurnAtRate);
+	PlayerInputComponent->BindAxis("TurnRate", this, &APlayerCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("LookUpRate", this, &AUnrealCodeLabCharacter::LookUpAtRate);
+	PlayerInputComponent->BindAxis("LookUpRate", this, &APlayerCharacter::LookUpAtRate);
 
 	// handle touch devices
-	PlayerInputComponent->BindTouch(IE_Pressed, this, &AUnrealCodeLabCharacter::TouchStarted);
-	PlayerInputComponent->BindTouch(IE_Released, this, &AUnrealCodeLabCharacter::TouchStopped);
+	PlayerInputComponent->BindTouch(IE_Pressed, this, &APlayerCharacter::TouchStarted);
+	PlayerInputComponent->BindTouch(IE_Released, this, &APlayerCharacter::TouchStopped);
 
 	// VR headset functionality
-	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &AUnrealCodeLabCharacter::OnResetVR);
+	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &APlayerCharacter::OnResetVR);
 }
 
 
-void AUnrealCodeLabCharacter::OnResetVR()
+void APlayerCharacter::OnResetVR()
 {
 	// If UnrealCodeLab is added to a project via 'Add Feature' in the Unreal Editor the dependency on HeadMountedDisplay in UnrealCodeLab.Build.cs is not automatically propagated
 	// and a linker error will result.
@@ -88,29 +88,29 @@ void AUnrealCodeLabCharacter::OnResetVR()
 	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
 }
 
-void AUnrealCodeLabCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
+void APlayerCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
 {
 	Jump();
 }
 
-void AUnrealCodeLabCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
+void APlayerCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
 {
 	StopJumping();
 }
 
-void AUnrealCodeLabCharacter::TurnAtRate(float Rate)
+void APlayerCharacter::TurnAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 }
 
-void AUnrealCodeLabCharacter::LookUpAtRate(float Rate)
+void APlayerCharacter::LookUpAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
-void AUnrealCodeLabCharacter::MoveForward(float Value)
+void APlayerCharacter::MoveForward(float Value)
 {
 	if ((Controller != nullptr) && (Value != 0.0f))
 	{
@@ -124,7 +124,7 @@ void AUnrealCodeLabCharacter::MoveForward(float Value)
 	}
 }
 
-void AUnrealCodeLabCharacter::MoveRight(float Value)
+void APlayerCharacter::MoveRight(float Value)
 {
 	if ( (Controller != nullptr) && (Value != 0.0f) )
 	{

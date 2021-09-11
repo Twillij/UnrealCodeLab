@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "UnrealCodeLabCharacter.generated.h"
+#include "CharacterBase.h"
+#include "PlayerCharacter.generated.h"
 
 UCLASS(config=Game)
-class AUnrealCodeLabCharacter : public ACharacter
+class APlayerCharacter : public ACharacterBase
 {
 	GENERATED_BODY()
 
@@ -19,7 +19,7 @@ class AUnrealCodeLabCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
 public:
-	AUnrealCodeLabCharacter();
+	APlayerCharacter();
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
