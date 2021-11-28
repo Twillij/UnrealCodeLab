@@ -6,33 +6,58 @@
 
 class UQuestObjective;
 
+UENUM(BlueprintType)
+enum class EQuestStatus : uint8
+{
+	Available,
+	Started,
+	Completed,
+	Abandoned
+};
+
 UCLASS(Blueprintable)
 class UNREALCODELAB_API UQuest : public UObject
 {
 	GENERATED_BODY()
 	
 public:
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, DisplayName = "Quest ID")
-	FName QuestId;
+	FName QuestID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "Display Name")
-	FString QuestDisplayName;
+	FText QuestDisplayName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "Description")
 	FText QuestDescription;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "Objectives")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, DisplayName = "Objectives")
 	TArray<UQuestObjective*> QuestObjectives;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	bool bIsCompleted;
+protected:
+	UPROPERTY(VisibleAnywhere)
+	EQuestStatus QuestStatus;
 
 public:
-	
+	void Init();
+
 	UFUNCTION(BlueprintCallable)
-	void SetQuestStatus(bool bIsComplete);
+	EQuestStatus GetQuestStatus();
+
+	UFUNCTION(BlueprintCallable)
+	void SetQuestStatus(EQuestStatus NewStatus);
+
+	UFUNCTION(BlueprintCallable)
+	void SetObjectiveStatusByIndex(int ArrayIndex, bool bIsComplete);
+
+	UFUNCTION(BlueprintCallable)
+	void SetObjectiveStatusByID(const FName& ObjectiveID, bool bIsComplete);
+
+	UFUNCTION(BlueprintCallable)
+	void AddObjective(UQuestObjective* Objective);
+
+	UFUNCTION(BlueprintCallable)
+	bool CompareID(UQuest* OtherQuest);
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void OnQuestComplete();
+	void OnQuestStatusChanged(EQuestStatus NewStatus);
 };

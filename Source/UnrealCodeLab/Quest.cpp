@@ -1,12 +1,75 @@
 #include "Quest.h"
 #include "QuestObjective.h"
 
-void UQuest::SetQuestStatus(bool bIsComplete)
+void UQuest::Init()
 {
-	// If the quest completion status has changed
-	if (bIsComplete != bIsCompleted)
+	for (UQuestObjective* objective : QuestObjectives)
 	{
-		OnQuestComplete();
-		bIsCompleted = bIsComplete;
+		objective->OwningQuest = this;
 	}
+}
+
+EQuestStatus UQuest::GetQuestStatus()
+{
+	return QuestStatus;
+}
+
+void UQuest::SetQuestStatus(EQuestStatus NewStatus)
+{
+	if (NewStatus == QuestStatus)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Set quest status failed: New status is the same as current status"));
+		return;
+	}
+
+	if (NewStatus == EQuestStatus::Started)
+	{
+		Init();
+	}
+
+	QuestStatus = NewStatus;
+	OnQuestStatusChanged(NewStatus);
+}
+
+void UQuest::SetObjectiveStatusByIndex(int ArrayIndex, bool bIsComplete)
+{
+	if (ArrayIndex < 0 || ArrayIndex >= QuestObjectives.Num())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Set objective status failed: Invalid index"));
+		return;
+	}
+
+	QuestObjectives[ArrayIndex]->SetObjectiveStatus(bIsComplete);
+}
+
+void UQuest::SetObjectiveStatusByID(const FName& ObjectiveID, bool bIsComplete)
+{
+	for (UQuestObjective* objective : QuestObjectives)
+	{
+		if (objective->ObjectiveID == ObjectiveID)
+		{
+			objective->SetObjectiveStatus(bIsComplete);
+			return;
+		}
+	}
+
+	UE_LOG(LogTemp, Error, TEXT("Set objective status failed: Invalid ID"));
+}
+
+void UQuest::AddObjective(UQuestObjective* Objective)
+{
+	if (Objective == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Add quest objective failed: Null quest objective"));
+		return;
+	}
+
+	QuestObjectives.Add(Objective);
+	Objective->OwningQuest = this;
+}
+
+bool UQuest::CompareID(UQuest* OtherQuest)
+{
+	bool bIsUnique = (QuestID.Compare(OtherQuest->QuestID) != 0) ? true : false;
+	return bIsUnique;
 }
