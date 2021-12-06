@@ -13,25 +13,35 @@ class UNREALCODELAB_API AQuestManager : public AActor
 public:	
 	AQuestManager();
 
-	UPROPERTY(BlueprintReadOnly)
-	TArray<UQuest*> Quests;
-
 private:
+	TArray<UQuest*> Quests;
 	TArray<UQuest*> FilteredQuests;
 
 public:	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintCallable)
-	const TArray<UQuest*>& GetQuestsByStatus(EQuestStatus FilteredStatus);
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	const TArray<UQuest*>& GetAllQuests();
 
-	UFUNCTION(BlueprintCallable)
-	void SetQuestStatusByIndex(int ArrayIndex, EQuestStatus Status);
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	const TArray<UQuest*>& GetQuestsByStatus(EQuestStatus Status);
 
-	UFUNCTION(BlueprintCallable)
-	void SetQuestStatusByID(const FName& QuestID, EQuestStatus Status);
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	UQuest* GetQuestByID(const FName& QuestID);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	EQuestStatus GetQuestStatus(const FName& QuestID);
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	void SetQuestStatus(const FName& QuestID, EQuestStatus Status);
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
 	void AddNewQuest(UQuest* NewQuest);
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	const TArray<UQuest*>& SortQuestsByID();
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	const TArray<UQuest*>& SortQuestByStatus();
 };

@@ -9,6 +9,11 @@ void UQuest::Init()
 	}
 }
 
+const FName& UQuest::GetQuestID()
+{
+	return QuestID;
+}
+
 EQuestStatus UQuest::GetQuestStatus()
 {
 	return QuestStatus;
@@ -20,11 +25,6 @@ void UQuest::SetQuestStatus(EQuestStatus NewStatus)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Set quest status failed: New status is the same as current status"));
 		return;
-	}
-
-	if (NewStatus == EQuestStatus::Started)
-	{
-		Init();
 	}
 
 	QuestStatus = NewStatus;
@@ -68,7 +68,7 @@ void UQuest::AddObjective(UQuestObjective* Objective)
 	Objective->OwningQuest = this;
 }
 
-bool UQuest::CompareID(UQuest* OtherQuest)
+bool UQuest::CompareQuestID(UQuest* OtherQuest)
 {
 	bool bIsUnique = (QuestID.Compare(OtherQuest->QuestID) != 0) ? true : false;
 	return bIsUnique;

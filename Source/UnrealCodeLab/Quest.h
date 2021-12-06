@@ -21,7 +21,7 @@ class UNREALCODELAB_API UQuest : public UObject
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, DisplayName = "Quest ID")
+	UPROPERTY(EditAnywhere)
 	FName QuestID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "Display Name")
@@ -30,15 +30,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "Description")
 	FText QuestDescription;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, DisplayName = "Objectives")
-	TArray<UQuestObjective*> QuestObjectives;
-
-protected:
-	UPROPERTY(VisibleAnywhere)
+private:
 	EQuestStatus QuestStatus;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Objectives")
+	TArray<UQuestObjective*> QuestObjectives;
 
 public:
 	void Init();
+	
+	UFUNCTION(BlueprintCallable)
+	const FName& GetQuestID();
 
 	UFUNCTION(BlueprintCallable)
 	EQuestStatus GetQuestStatus();
@@ -56,7 +58,7 @@ public:
 	void AddObjective(UQuestObjective* Objective);
 
 	UFUNCTION(BlueprintCallable)
-	bool CompareID(UQuest* OtherQuest);
+	bool CompareQuestID(UQuest* OtherQuest);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnQuestStatusChanged(EQuestStatus NewStatus);
