@@ -19,6 +19,11 @@ EQuestStatus UQuest::GetQuestStatus()
 	return QuestStatus;
 }
 
+const TArray<UQuestObjective*>& UQuest::GetObjectives()
+{
+	return QuestObjectives;
+}
+
 void UQuest::SetQuestStatus(EQuestStatus NewStatus)
 {
 	if (NewStatus == QuestStatus)

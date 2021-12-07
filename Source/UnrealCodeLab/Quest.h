@@ -30,10 +30,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "Description")
 	FText QuestDescription;
 
+	UPROPERTY(EditAnywhere, DisplayName = "Objectives")
+	TArray<TSubclassOf<UQuestObjective>> InitialQuestObjectiveClasses;
+
 private:
 	EQuestStatus QuestStatus;
-
-	UPROPERTY(EditAnywhere, DisplayName = "Objectives")
 	TArray<UQuestObjective*> QuestObjectives;
 
 public:
@@ -44,6 +45,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	EQuestStatus GetQuestStatus();
+
+	UFUNCTION(BlueprintCallable)
+	const TArray<UQuestObjective*>& GetObjectives();
 
 	UFUNCTION(BlueprintCallable)
 	void SetQuestStatus(EQuestStatus NewStatus);
