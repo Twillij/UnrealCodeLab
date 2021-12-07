@@ -4,6 +4,8 @@
 #include "UObject/Interface.h"
 #include "QuestInterface.generated.h"
 
+class AQuestManager;
+
 UINTERFACE(MinimalAPI, BlueprintType)
 class UQuestInterface : public UInterface
 {
@@ -15,5 +17,6 @@ class UNREALCODELAB_API IQuestInterface
 	GENERATED_BODY()
 
 public:
-
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Quest")
+	AQuestManager* GetQuestManager();
 };
