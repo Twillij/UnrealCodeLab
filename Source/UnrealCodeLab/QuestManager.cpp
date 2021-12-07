@@ -98,7 +98,7 @@ const TArray<UQuest*>& AQuestManager::SortQuestsByID()
 		for (int j = i + 1; j < Quests.Num(); ++j)
 		{
 			// If the compared ID has a smaller value, then change the index
-			smallest = (id > Quests[j]->GetQuestID()) ? j : smallest;
+			smallest = (id.LexicalLess(Quests[j]->GetQuestID())) ? smallest : j;
 		}
 
 		if (i != smallest)
