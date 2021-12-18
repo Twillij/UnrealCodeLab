@@ -6,16 +6,16 @@
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
 #include "CharacterAttributeSet.h"
-#include "CharacterBase.generated.h"
+#include "CustomCharacter.generated.h"
 
 UCLASS()
-class UNREALCODELAB_API ACharacterBase : public ACharacter, public IAbilitySystemInterface
+class UNREALCODELAB_API ACustomCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	ACharacterBase();
+	ACustomCharacter();
 
 	// Component required for the gameplay ability system
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)

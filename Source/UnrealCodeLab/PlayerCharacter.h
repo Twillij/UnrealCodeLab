@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharacterBase.h"
+#include "CustomCharacter.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS(config=Game)
-class APlayerCharacter : public ACharacterBase
+class APlayerCharacter : public ACustomCharacter
 {
 	GENERATED_BODY()
 
