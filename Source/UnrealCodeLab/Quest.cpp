@@ -3,9 +3,11 @@
 
 void UQuest::Init()
 {
-	for (UQuestObjective* objective : QuestObjectives)
+	for (auto objectiveClass : QuestObjectiveClasses)
 	{
+		UQuestObjective* objective = NewObject<UQuestObjective>(this, objectiveClass);
 		objective->OwningQuest = this;
+		QuestObjectives.Add(objective);
 	}
 }
 
@@ -33,7 +35,6 @@ void UQuest::SetQuestStatus(EQuestStatus NewStatus)
 	}
 
 	QuestStatus = NewStatus;
-	OnQuestStatusChanged(NewStatus);
 }
 
 void UQuest::SetObjectiveStatusByIndex(int ArrayIndex, bool bIsComplete)
@@ -47,7 +48,7 @@ void UQuest::SetObjectiveStatusByIndex(int ArrayIndex, bool bIsComplete)
 	QuestObjectives[ArrayIndex]->SetObjectiveStatus(bIsComplete);
 }
 
-void UQuest::SetObjectiveStatusByID(const FName& ObjectiveID, bool bIsComplete)
+void UQuest::SetObjectiveStatusByID(FName ObjectiveID, bool bIsComplete)
 {
 	for (UQuestObjective* objective : QuestObjectives)
 	{
@@ -59,18 +60,6 @@ void UQuest::SetObjectiveStatusByID(const FName& ObjectiveID, bool bIsComplete)
 	}
 
 	UE_LOG(LogTemp, Error, TEXT("Set objective status failed: Invalid ID"));
-}
-
-void UQuest::AddObjective(UQuestObjective* Objective)
-{
-	if (Objective == nullptr)
-	{
-		UE_LOG(LogTemp, Error, TEXT("Add quest objective failed: Null quest objective"));
-		return;
-	}
-
-	QuestObjectives.Add(Objective);
-	Objective->OwningQuest = this;
 }
 
 bool UQuest::CompareQuestID(UQuest* OtherQuest)

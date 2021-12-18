@@ -30,8 +30,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "Description")
 	FText QuestDescription;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsHidden;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsLocked;
+
 	UPROPERTY(EditAnywhere, DisplayName = "Objectives")
-	TArray<TSubclassOf<UQuestObjective>> InitialQuestObjectiveClasses;
+	TArray<TSubclassOf<UQuestObjective>> QuestObjectiveClasses;
 
 private:
 	EQuestStatus QuestStatus;
@@ -49,21 +55,16 @@ public:
 	UFUNCTION(BlueprintCallable)
 	const TArray<UQuestObjective*>& GetObjectives();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Quest")
 	void SetQuestStatus(EQuestStatus NewStatus);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Quest")
 	void SetObjectiveStatusByIndex(int ArrayIndex, bool bIsComplete);
 
-	UFUNCTION(BlueprintCallable)
-	void SetObjectiveStatusByID(const FName& ObjectiveID, bool bIsComplete);
-
-	UFUNCTION(BlueprintCallable)
-	void AddObjective(UQuestObjective* Objective);
-
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	void SetObjectiveStatusByID(FName ObjectiveID, bool bIsComplete);
+	
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	// Returns true if the compared ID is the same, false otherwise.
 	bool CompareQuestID(UQuest* OtherQuest);
-
-	UFUNCTION(BlueprintImplementableEvent)
-	void OnQuestStatusChanged(EQuestStatus NewStatus);
 };
