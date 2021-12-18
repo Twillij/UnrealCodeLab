@@ -28,16 +28,19 @@ public:
 	const TArray<UQuest*>& GetQuestsByStatus(EQuestStatus Status);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	UQuest* GetQuestByID(const FName& QuestID);
+	UQuest* GetQuestByID(FName QuestID);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	EQuestStatus GetQuestStatus(const FName& QuestID);
+	EQuestStatus GetQuestStatus(FName QuestID);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	void SetQuestStatus(const FName& QuestID, EQuestStatus Status);
+	void SetQuestStatus(FName QuestID, EQuestStatus Status);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	void AddNewQuest(UQuest* NewQuest);
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	const TArray<UQuest*>& SortQuestsByDisplayName();
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	const TArray<UQuest*>& SortQuestsByID();
