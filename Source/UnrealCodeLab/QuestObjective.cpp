@@ -13,12 +13,11 @@ UQuest* UQuestObjective::GetOwningQuest()
 
 void UQuestObjective::SetObjectiveStatus(bool bIsComplete)
 {
-	if (bIsComplete == bIsCompleted)
+	if (bIsComplete && bIsLocked)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Set objective status failed: New status is the same as current status"));
+		UE_LOG(LogTemp, Warning, TEXT("Set objective status failed: Objective is locked."));
 		return;
 	}
 
 	bIsCompleted = bIsComplete;
-	OnObjectiveComplete();
 }

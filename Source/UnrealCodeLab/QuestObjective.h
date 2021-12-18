@@ -36,6 +36,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsHidden;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsLocked;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool bIsCompleted;
 
@@ -45,7 +48,4 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetObjectiveStatus(bool bIsComplete);
-
-	UFUNCTION(BlueprintImplementableEvent)
-	void OnObjectiveComplete();
 };
