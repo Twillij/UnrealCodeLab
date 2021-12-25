@@ -64,24 +64,6 @@ UQuest* AQuestManager::GetQuestByID(FName QuestID)
 	return nullptr;
 }
 
-EQuestStatus AQuestManager::GetQuestStatus(FName QuestID)
-{
-	if (UQuest* quest = GetQuestByID(QuestID))
-	{
-		return quest->GetQuestStatus();
-	}
-
-	return EQuestStatus();
-}
-
-void AQuestManager::SetQuestStatus(FName QuestID, EQuestStatus Status)
-{
-	if (UQuest* quest = GetQuestByID(QuestID))
-	{
-		quest->SetQuestStatus(Status);
-	}
-}
-
 void AQuestManager::AddNewQuest(UQuest* NewQuest)
 {
 	for (UQuest* quest : Quests)

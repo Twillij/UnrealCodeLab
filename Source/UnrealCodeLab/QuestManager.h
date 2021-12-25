@@ -31,12 +31,6 @@ public:
 	UQuest* GetQuestByID(FName QuestID);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	EQuestStatus GetQuestStatus(FName QuestID);
-
-	UFUNCTION(BlueprintCallable, Category = "Quest")
-	void SetQuestStatus(FName QuestID, EQuestStatus Status);
-
-	UFUNCTION(BlueprintCallable, Category = "Quest")
 	void AddNewQuest(UQuest* NewQuest);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
