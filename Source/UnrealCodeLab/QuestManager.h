@@ -2,8 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Quest.h"
+#include "PublicObjectTypes.h"
 #include "QuestManager.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestStatusChanged, UQuest*, Quest);
 
 UCLASS()
 class UNREALCODELAB_API AQuestManager : public AActor
@@ -12,6 +14,24 @@ class UNREALCODELAB_API AQuestManager : public AActor
 	
 public:	
 	AQuestManager();
+
+	UPROPERTY(BlueprintAssignable)
+	FOnQuestStatusChanged OnQuestLocked;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnQuestStatusChanged OnQuestUnlocked;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnQuestStatusChanged OnQuestAccepted;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnQuestStatusChanged OnQuestAbandoned;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnQuestStatusChanged OnQuestFailed;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnQuestStatusChanged OnQuestCompleted;
 
 private:
 	TArray<UQuest*> Quests;

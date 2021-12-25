@@ -1,4 +1,5 @@
 #include "QuestManager.h"
+#include "Quest.h"
 
 // Sets default values
 AQuestManager::AQuestManager()
@@ -12,16 +13,18 @@ void AQuestManager::BeginPlay()
 {
 	Super::BeginPlay();
 
+#if !UE_BUILD_SHIPPING
 	for (int i = 0; i < Quests.Num(); ++i)
 	{
 		for (int j = i + 1; j < Quests.Num(); ++j)
 		{
 			if (Quests[i]->CompareQuestID(Quests[j]))
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Found a duplicate quest ID: %s"), *Quests[i]->GetQuestID().ToString());
+				UE_LOG(LogTemp, Warning, TEXT("Found a duplicate quest ID: %s"), *Quests[i]->QuestID.ToString());
 			}
 		}
 	}
+#endif
 }
 
 // Called every frame
@@ -54,7 +57,7 @@ UQuest* AQuestManager::GetQuestByID(FName QuestID)
 {
 	for (UQuest* quest : Quests)
 	{
-		if (quest->GetQuestID() == QuestID)
+		if (quest->QuestID == QuestID)
 		{
 			return quest;
 		}
@@ -113,14 +116,14 @@ const TArray<UQuest*>& AQuestManager::SortQuestsByID()
 	// Use selection sort
 	for (int i = 0; i < Quests.Num(); ++i)
 	{
-		FName id = Quests[i]->GetQuestID();
+		FName id = Quests[i]->QuestID;
 		int smallest = i;
 
 		// Find the index of quest with smallest ID value in the array
 		for (int j = i + 1; j < Quests.Num(); ++j)
 		{
 			// If the compared ID has a smaller value, then change the index
-			smallest = (id.LexicalLess(Quests[j]->GetQuestID())) ? smallest : j;
+			smallest = (id.LexicalLess(Quests[j]->QuestID)) ? smallest : j;
 		}
 
 		if (i != smallest)
@@ -144,7 +147,7 @@ const TArray<UQuest*>& AQuestManager::SortQuestByStatus()
 		int smallest = i;
 
 		// If the status is already the smallest enum value, skip the sort
-		if (status == EQuestStatus::Available)
+		if (status == EQuestStatus())
 		{
 			continue;
 		}

@@ -2,18 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "PublicObjectTypes.h"
 #include "Quest.generated.h"
 
 class UQuestObjective;
-
-UENUM(BlueprintType)
-enum class EQuestStatus : uint8
-{
-	Available,
-	Started,
-	Completed,
-	Abandoned
-};
 
 UCLASS(Blueprintable)
 class UNREALCODELAB_API UQuest : public UObject
@@ -21,7 +13,7 @@ class UNREALCODELAB_API UQuest : public UObject
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FName QuestID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "Display Name")
@@ -33,9 +25,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsHidden;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bIsLocked;
-
 	UPROPERTY(EditAnywhere, DisplayName = "Objectives")
 	TArray<TSubclassOf<UQuestObjective>> QuestObjectiveClasses;
 
@@ -45,26 +34,43 @@ private:
 
 public:
 	void Init();
-	
-	UFUNCTION(BlueprintCallable)
-	const FName& GetQuestID();
+
+	void OnQuestStatusChanged(EQuestStatus NewStatus);
 
 	UFUNCTION(BlueprintCallable)
 	EQuestStatus GetQuestStatus();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	UQuestObjective* GetObjectiveByID(FName ObjectiveID);
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
 	const TArray<UQuestObjective*>& GetObjectives();
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	void SetQuestStatus(EQuestStatus NewStatus);
-
-	UFUNCTION(BlueprintCallable, Category = "Quest")
-	void SetObjectiveStatusByIndex(int ArrayIndex, bool bIsComplete);
-
-	UFUNCTION(BlueprintCallable, Category = "Quest")
-	void SetObjectiveStatusByID(FName ObjectiveID, bool bIsComplete);
+	void SetQuestStatus(EQuestStatus NewStatus, bool bIgnoreLock = false);
 	
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	bool CheckQuestComplete(bool bSetCompleted = false);
+
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Returns true if the compared ID is the same, false otherwise.
 	bool CompareQuestID(UQuest* OtherQuest);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Quest")
+	void OnQuestLocked();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Quest")
+	void OnQuestUnlocked();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Quest")
+	void OnQuestAccepted();
+	
+	UFUNCTION(BlueprintImplementableEvent, Category = "Quest")
+	void OnQuestAbandoned();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Quest")
+	void OnQuestFailed();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Quest")
+	void OnQuestCompleted();
 };

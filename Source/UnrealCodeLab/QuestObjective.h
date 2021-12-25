@@ -22,9 +22,10 @@ class UNREALCODELAB_API UQuestObjective : public UObject
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(BlueprintReadOnly)
 	UQuest* OwningQuest;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "Objective ID")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FName ObjectiveID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "Type")
@@ -39,13 +40,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsLocked;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsRepeatable;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool bIsCompleted;
 
 public:
 	UFUNCTION(BlueprintCallable)
-	UQuest* GetOwningQuest();
-
-	UFUNCTION(BlueprintCallable)
 	void SetObjectiveStatus(bool bIsComplete);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	bool CheckObjectiveConditionsMet();
 };
