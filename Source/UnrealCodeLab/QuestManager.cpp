@@ -67,14 +67,22 @@ UQuest* AQuestManager::GetQuestByID(FName QuestID)
 	return nullptr;
 }
 
-void AQuestManager::AddNewQuest(UQuest* NewQuest)
+void AQuestManager::AddNewQuest(UQuest* NewQuest, bool bOverride)
 {
 	for (UQuest* quest : Quests)
 	{
 		if (quest->CompareQuestID(NewQuest))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Adding new quest failed: Quest ID already exists"));
-			return;
+			if (bOverride)
+			{
+				Quests.Remove(quest);
+				break;
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Adding new quest failed: Quest ID already exists"));
+				return;
+			}
 		}
 	}
 

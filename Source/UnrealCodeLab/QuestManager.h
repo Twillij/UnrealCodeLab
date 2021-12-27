@@ -51,7 +51,9 @@ public:
 	UQuest* GetQuestByID(FName QuestID);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	void AddNewQuest(UQuest* NewQuest);
+	// Adds a new quest to the manager's quest list, and performs any necessary initialisation.
+	// * bOverride = Whether the function overrides any existing quest with the same ID.
+	void AddNewQuest(UQuest* NewQuest, bool bOverride = false);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	const TArray<UQuest*>& SortQuestsByDisplayName();

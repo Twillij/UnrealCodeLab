@@ -51,5 +51,8 @@ public:
 	void SetObjectiveStatus(bool bIsComplete);
 
 	UFUNCTION(BlueprintImplementableEvent)
-	bool CheckObjectiveConditionsMet();
+	bool CheckCompletionConditions();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ResetProgress();
 };

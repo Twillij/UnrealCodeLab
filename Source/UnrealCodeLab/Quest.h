@@ -25,6 +25,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsHidden;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsRepeatable;
+
 	UPROPERTY(EditAnywhere, DisplayName = "Objectives")
 	TArray<TSubclassOf<UQuestObjective>> QuestObjectiveClasses;
 
@@ -37,6 +40,9 @@ public:
 
 	void OnQuestStatusChanged(EQuestStatus NewStatus);
 
+	// Returns true if the current quest status is being flagged to ignore.
+	bool IsStatusBlocked(const FQuestStatusBlockFlags& Flags);
+
 	UFUNCTION(BlueprintCallable)
 	EQuestStatus GetQuestStatus();
 
@@ -48,13 +54,39 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	void SetQuestStatus(EQuestStatus NewStatus, bool bIgnoreLock = false);
-	
+
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	bool CheckQuestComplete(bool bSetCompleted = false);
+	bool LockQuest(FQuestStatusBlockFlags Flags);
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	bool UnlockQuest(FQuestStatusBlockFlags Flags);
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	bool AcceptQuest(FQuestStatusBlockFlags Flags);
+
+	//UFUNCTION(BlueprintCallable, Category = "Quest")
+	//bool AbandonQuest(FQuestStatusBlockFlags Flags);
+
+	//UFUNCTION(BlueprintCallable, Category = "Quest")
+	//bool FailQuest(FQuestStatusBlockFlags Flags);
+
+	//UFUNCTION(BlueprintCallable, Category = "Quest")
+	//bool CompleteQuest(FQuestStatusBlockFlags Flags);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Returns true if the compared ID is the same, false otherwise.
 	bool CompareQuestID(UQuest* OtherQuest);
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Quest")
+	// Returns true if unlock conditions are met.
+	bool CheckUnlockConditions();
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Quest")
+	// Returns true if completion conditions are met.
+	bool CheckCompletionConditions();
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Quest")
+	void ResetProgress();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Quest")
 	void OnQuestLocked();

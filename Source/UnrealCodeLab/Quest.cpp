@@ -47,6 +47,16 @@ void UQuest::OnQuestStatusChanged(EQuestStatus NewStatus)
 	}
 }
 
+bool UQuest::IsStatusBlocked(const FQuestStatusBlockFlags& Flags)
+{
+	return (QuestStatus == EQuestStatus::Locked && Flags.bBlockLocked) ||
+		(QuestStatus == EQuestStatus::Unlocked && Flags.bBlockUnlocked) ||
+		(QuestStatus == EQuestStatus::Accepted && Flags.bBlockAccepted) ||
+		(QuestStatus == EQuestStatus::Abandoned && Flags.bBlockAbandoned) ||
+		(QuestStatus == EQuestStatus::Failed && Flags.bBlockFailed) ||
+		(QuestStatus == EQuestStatus::Completed && Flags.bBlockCompleted);
+}
+
 EQuestStatus UQuest::GetQuestStatus()
 {
 	return QuestStatus;
@@ -89,7 +99,83 @@ void UQuest::SetQuestStatus(EQuestStatus NewStatus, bool bIgnoreLock)
 	OnQuestStatusChanged(NewStatus);
 }
 
-bool UQuest::CheckQuestComplete(bool bSetCompleted)
+bool UQuest::LockQuest(FQuestStatusBlockFlags Flags)
+{
+	if (Flags.bUseDefaultFlags)
+	{
+		Flags.bBlockLocked = true;
+	}
+
+	if (!IsStatusBlocked(Flags))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Lock quest failed: Quest status is blocked."));
+		return false;
+	}
+
+	QuestStatus = EQuestStatus::Locked;
+	OnQuestLocked();
+	UCustomFunctionLibrary::GetQuestManager(this)->OnQuestLocked.Broadcast(this);
+
+	return true;
+}
+
+bool UQuest::UnlockQuest(FQuestStatusBlockFlags Flags)
+{
+	if (Flags.bUseDefaultFlags)
+	{
+		Flags.bBlockLocked = true;
+		Flags.bBlockAccepted = true;
+		Flags.bBlockAbandoned = true;
+		Flags.bBlockFailed = true;
+		Flags.bBlockCompleted = true;
+	}
+
+	if (IsStatusBlocked(Flags))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Unlock quest failed: Quest status is blocked."));
+		return false;
+	}
+
+	QuestStatus = EQuestStatus::Unlocked;
+	OnQuestLocked();
+	UCustomFunctionLibrary::GetQuestManager(this)->OnQuestUnlocked.Broadcast(this);
+
+	return true;
+}
+
+bool UQuest::AcceptQuest(FQuestStatusBlockFlags Flags)
+{
+	if (Flags.bUseDefaultFlags)
+	{
+		Flags.bBlockLocked = true;
+		Flags.bBlockAccepted = true;
+		Flags.bBlockCompleted = bIsRepeatable ? false : true;
+	}
+
+	if (IsStatusBlocked(Flags))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Unlock quest failed: Quest status is blocked."));
+		return false;
+	}
+
+	QuestStatus = EQuestStatus::Accepted;
+	OnQuestAccepted();
+	UCustomFunctionLibrary::GetQuestManager(this)->OnQuestAccepted.Broadcast(this);
+
+	return false;
+}
+
+bool UQuest::CompareQuestID(UQuest* OtherQuest)
+{
+	return (QuestID.Compare(OtherQuest->QuestID) != 0) ? true : false;
+}
+
+bool UQuest::CheckUnlockConditions_Implementation()
+{
+	return true;
+}
+
+bool UQuest::CheckCompletionConditions_Implementation()
 {
 	bool bIsCompleted = true;
 
@@ -102,13 +188,13 @@ bool UQuest::CheckQuestComplete(bool bSetCompleted)
 		}
 	}
 
-	if (bSetCompleted)
-		SetQuestStatus(EQuestStatus::Completed);
-
 	return bIsCompleted;
 }
 
-bool UQuest::CompareQuestID(UQuest* OtherQuest)
+void UQuest::ResetProgress_Implementation()
 {
-	return (QuestID.Compare(OtherQuest->QuestID) != 0) ? true : false;
+	for (UQuestObjective* objective : QuestObjectives)
+	{
+		objective->ResetProgress();
+	}
 }
