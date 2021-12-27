@@ -16,11 +16,30 @@ enum class EQuestStatus : uint8
 };
 
 USTRUCT(BlueprintType)
-struct FQuestRewards
+struct FQuestStatusBlockFlags
 {
 	GENERATED_BODY()
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Exp;
+	// Set to true to ignore all the other flags and allow functions to handle the checks instead.
+	bool bUseDefaultFlags = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bBlockLocked;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bBlockUnlocked;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bBlockAccepted;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bBlockAbandoned;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bBlockFailed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bBlockCompleted;
 };
