@@ -16,22 +16,22 @@ public:
 	AQuestManager();
 
 	UPROPERTY(BlueprintAssignable)
-	FOnQuestStatusChanged OnQuestLocked;
+	FOnQuestStatusChanged OnAnyQuestLocked;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnQuestStatusChanged OnQuestUnlocked;
+	FOnQuestStatusChanged OnAnyQuestUnlocked;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnQuestStatusChanged OnQuestAccepted;
+	FOnQuestStatusChanged OnAnyQuestAccepted;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnQuestStatusChanged OnQuestAbandoned;
+	FOnQuestStatusChanged OnAnyQuestAbandoned;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnQuestStatusChanged OnQuestFailed;
+	FOnQuestStatusChanged OnAnyQuestFailed;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnQuestStatusChanged OnQuestCompleted;
+	FOnQuestStatusChanged OnAnyQuestCompleted;
 
 private:
 	TArray<UQuest*> Quests;

@@ -38,8 +38,6 @@ private:
 public:
 	void Init();
 
-	void OnQuestStatusChanged(EQuestStatus NewStatus);
-
 	// Returns true if the current quest status is being flagged to ignore.
 	bool IsStatusBlocked(const FQuestStatusBlockFlags& Flags);
 
@@ -53,25 +51,28 @@ public:
 	const TArray<UQuestObjective*>& GetObjectives();
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	void SetQuestStatus(EQuestStatus NewStatus, bool bIgnoreLock = false);
-
-	UFUNCTION(BlueprintCallable, Category = "Quest")
+	// Returns true if quest is able to be locked, false otherwise.
 	bool LockQuest(FQuestStatusBlockFlags Flags);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
+	// Returns true if quest is able to be unlocked, false otherwise.
 	bool UnlockQuest(FQuestStatusBlockFlags Flags);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
+	// Returns true if quest is able to be accepted, false otherwise.
 	bool AcceptQuest(FQuestStatusBlockFlags Flags);
 
-	//UFUNCTION(BlueprintCallable, Category = "Quest")
-	//bool AbandonQuest(FQuestStatusBlockFlags Flags);
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	// Returns true if quest is able to be abandoned, false otherwise.
+	bool AbandonQuest(FQuestStatusBlockFlags Flags);
 
-	//UFUNCTION(BlueprintCallable, Category = "Quest")
-	//bool FailQuest(FQuestStatusBlockFlags Flags);
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	// Returns true if quest is able to be failed, false otherwise.
+	bool FailQuest(FQuestStatusBlockFlags Flags);
 
-	//UFUNCTION(BlueprintCallable, Category = "Quest")
-	//bool CompleteQuest(FQuestStatusBlockFlags Flags);
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	// Returns true if quest is able to be completed, false otherwise.
+	bool CompleteQuest(FQuestStatusBlockFlags Flags);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Returns true if the compared ID is the same, false otherwise.

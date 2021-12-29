@@ -13,40 +13,6 @@ void UQuest::Init()
 	}
 }
 
-void UQuest::OnQuestStatusChanged(EQuestStatus NewStatus)
-{
-	if (NewStatus == EQuestStatus::Locked)
-	{
-		OnQuestLocked();
-		UCustomFunctionLibrary::GetQuestManager(this)->OnQuestLocked.Broadcast(this);
-	}
-	else if (NewStatus == EQuestStatus::Unlocked)
-	{
-		OnQuestUnlocked();
-		UCustomFunctionLibrary::GetQuestManager(this)->OnQuestUnlocked.Broadcast(this);
-	}
-	else if (NewStatus == EQuestStatus::Accepted)
-	{
-		OnQuestAccepted();
-		UCustomFunctionLibrary::GetQuestManager(this)->OnQuestAccepted.Broadcast(this);
-	}
-	else if (NewStatus == EQuestStatus::Abandoned)
-	{
-		OnQuestAbandoned();
-		UCustomFunctionLibrary::GetQuestManager(this)->OnQuestAbandoned.Broadcast(this);
-	}
-	else if (NewStatus == EQuestStatus::Failed)
-	{
-		OnQuestFailed();
-		UCustomFunctionLibrary::GetQuestManager(this)->OnQuestFailed.Broadcast(this);
-	}
-	else if (NewStatus == EQuestStatus::Completed)
-	{
-		OnQuestCompleted();
-		UCustomFunctionLibrary::GetQuestManager(this)->OnQuestCompleted.Broadcast(this);
-	}
-}
-
 bool UQuest::IsStatusBlocked(const FQuestStatusBlockFlags& Flags)
 {
 	return (QuestStatus == EQuestStatus::Locked && Flags.bBlockLocked) ||
@@ -81,24 +47,6 @@ const TArray<UQuestObjective*>& UQuest::GetObjectives()
 	return QuestObjectives;
 }
 
-void UQuest::SetQuestStatus(EQuestStatus NewStatus, bool bIgnoreLock)
-{
-	if (QuestStatus == NewStatus)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Set quest status failed: New status is the same as current status."));
-		return;
-	}
-	else if (QuestStatus == EQuestStatus::Locked && !bIgnoreLock)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Set quest status failed: Quest is currently locked."));
-		return;
-	}
-
-	QuestStatus = NewStatus;
-
-	OnQuestStatusChanged(NewStatus);
-}
-
 bool UQuest::LockQuest(FQuestStatusBlockFlags Flags)
 {
 	if (Flags.bUseDefaultFlags)
@@ -114,7 +62,7 @@ bool UQuest::LockQuest(FQuestStatusBlockFlags Flags)
 
 	QuestStatus = EQuestStatus::Locked;
 	OnQuestLocked();
-	UCustomFunctionLibrary::GetQuestManager(this)->OnQuestLocked.Broadcast(this);
+	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyQuestLocked.Broadcast(this);
 
 	return true;
 }
@@ -137,8 +85,8 @@ bool UQuest::UnlockQuest(FQuestStatusBlockFlags Flags)
 	}
 
 	QuestStatus = EQuestStatus::Unlocked;
-	OnQuestLocked();
-	UCustomFunctionLibrary::GetQuestManager(this)->OnQuestUnlocked.Broadcast(this);
+	OnQuestUnlocked();
+	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyQuestUnlocked.Broadcast(this);
 
 	return true;
 }
@@ -160,9 +108,81 @@ bool UQuest::AcceptQuest(FQuestStatusBlockFlags Flags)
 
 	QuestStatus = EQuestStatus::Accepted;
 	OnQuestAccepted();
-	UCustomFunctionLibrary::GetQuestManager(this)->OnQuestAccepted.Broadcast(this);
+	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyQuestAccepted.Broadcast(this);
 
-	return false;
+	return true;
+}
+
+bool UQuest::AbandonQuest(FQuestStatusBlockFlags Flags)
+{
+	if (Flags.bUseDefaultFlags)
+	{
+		Flags.bBlockLocked = true;
+		Flags.bBlockUnlocked = true;
+		Flags.bBlockAbandoned = true;
+		Flags.bBlockFailed = true;
+		Flags.bBlockCompleted = true;
+	}
+
+	if (IsStatusBlocked(Flags))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Abandon quest failed: Quest status is blocked."));
+		return false;
+	}
+
+	QuestStatus = EQuestStatus::Abandoned;
+	OnQuestAbandoned();
+	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyQuestAbandoned.Broadcast(this);
+
+	return true;
+}
+
+bool UQuest::FailQuest(FQuestStatusBlockFlags Flags)
+{
+	if (Flags.bUseDefaultFlags)
+	{
+		Flags.bBlockLocked = true;
+		Flags.bBlockUnlocked = true;
+		Flags.bBlockAbandoned = true;
+		Flags.bBlockFailed = true;
+		Flags.bBlockCompleted = true;
+	}
+
+	if (IsStatusBlocked(Flags))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Fail quest failed: Quest status is blocked."));
+		return false;
+	}
+
+	QuestStatus = EQuestStatus::Failed;
+	OnQuestFailed();
+	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyQuestFailed.Broadcast(this);
+
+	return true;
+}
+
+bool UQuest::CompleteQuest(FQuestStatusBlockFlags Flags)
+{
+	if (Flags.bUseDefaultFlags)
+	{
+		Flags.bBlockLocked = true;
+		Flags.bBlockUnlocked = true;
+		Flags.bBlockAbandoned = true;
+		Flags.bBlockFailed = true;
+		Flags.bBlockCompleted = true;
+	}
+
+	if (IsStatusBlocked(Flags))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Complete quest failed: Quest status is blocked."));
+		return false;
+	}
+
+	QuestStatus = EQuestStatus::Completed;
+	OnQuestCompleted();
+	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyQuestCompleted.Broadcast(this);
+
+	return true;
 }
 
 bool UQuest::CompareQuestID(UQuest* OtherQuest)
