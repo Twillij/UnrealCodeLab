@@ -5,7 +5,11 @@
 #include "PublicObjectTypes.h"
 #include "QuestManager.generated.h"
 
+class UQuest;
+class UQuestObjective;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestStatusChanged, UQuest*, Quest);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnObjectiveStatusChanged, UQuestObjective*, Objective);
 
 UCLASS()
 class UNREALCODELAB_API AQuestManager : public AActor
@@ -22,7 +26,7 @@ public:
 	FOnQuestStatusChanged OnAnyQuestUnlocked;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnQuestStatusChanged OnAnyQuestAccepted;
+	FOnQuestStatusChanged OnAnyQuestStarted;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnQuestStatusChanged OnAnyQuestAbandoned;
@@ -32,6 +36,24 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnQuestStatusChanged OnAnyQuestCompleted;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnObjectiveStatusChanged OnAnyObjectiveLocked;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnObjectiveStatusChanged OnAnyObjectiveUnlocked;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnObjectiveStatusChanged OnAnyObjectiveStarted;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnObjectiveStatusChanged OnAnyObjectiveAbandoned;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnObjectiveStatusChanged OnAnyObjectiveFailed;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnObjectiveStatusChanged OnAnyObjectiveCompleted;
 
 private:
 	TArray<UQuest*> Quests;
@@ -45,7 +67,7 @@ public:
 	const TArray<UQuest*>& GetAllQuests();
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	const TArray<UQuest*>& GetQuestsByStatus(EQuestStatus Status);
+	const TArray<UQuest*>& GetQuestsByStatus(EProgressStatus Status);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	UQuest* GetQuestByID(FName QuestID);

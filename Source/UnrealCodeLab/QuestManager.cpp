@@ -1,5 +1,6 @@
 #include "QuestManager.h"
 #include "Quest.h"
+#include "QuestObjective.h"
 
 // Sets default values
 AQuestManager::AQuestManager()
@@ -38,7 +39,7 @@ const TArray<UQuest*>& AQuestManager::GetAllQuests()
 	return Quests;
 }
 
-const TArray<UQuest*>& AQuestManager::GetQuestsByStatus(EQuestStatus Status)
+const TArray<UQuest*>& AQuestManager::GetQuestsByStatus(EProgressStatus Status)
 {
 	FilteredQuests.Empty();
 
@@ -151,11 +152,11 @@ const TArray<UQuest*>& AQuestManager::SortQuestByStatus()
 	// Use selection sort
 	for (int i = 0; i < Quests.Num(); ++i)
 	{
-		EQuestStatus status = Quests[i]->GetQuestStatus();
+		EProgressStatus status = Quests[i]->GetQuestStatus();
 		int smallest = i;
 
 		// If the status is already the smallest enum value, skip the sort
-		if (status == EQuestStatus())
+		if (status == EProgressStatus())
 		{
 			continue;
 		}

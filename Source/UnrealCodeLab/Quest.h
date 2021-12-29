@@ -6,6 +6,7 @@
 #include "Quest.generated.h"
 
 class UQuestObjective;
+class UQuestRewards;
 
 UCLASS(Blueprintable)
 class UNREALCODELAB_API UQuest : public UObject
@@ -31,18 +32,21 @@ public:
 	UPROPERTY(EditAnywhere, DisplayName = "Objectives")
 	TArray<TSubclassOf<UQuestObjective>> QuestObjectiveClasses;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UQuestRewards* QuestRewards;
+
 private:
-	EQuestStatus QuestStatus;
+	EProgressStatus QuestStatus;
 	TArray<UQuestObjective*> QuestObjectives;
 
 public:
 	void Init();
 
 	// Returns true if the current quest status is being flagged to ignore.
-	bool IsStatusBlocked(const FQuestStatusBlockFlags& Flags);
+	bool IsQuestStatusBlocked(const FProgressStatusBlockFlags& Flags);
 
 	UFUNCTION(BlueprintCallable)
-	EQuestStatus GetQuestStatus();
+	EProgressStatus GetQuestStatus();
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	UQuestObjective* GetObjectiveByID(FName ObjectiveID);
@@ -52,27 +56,27 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Returns true if quest is able to be locked, false otherwise.
-	bool LockQuest(FQuestStatusBlockFlags Flags);
+	bool LockQuest(FProgressStatusBlockFlags Flags);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Returns true if quest is able to be unlocked, false otherwise.
-	bool UnlockQuest(FQuestStatusBlockFlags Flags);
+	bool UnlockQuest(FProgressStatusBlockFlags Flags);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	// Returns true if quest is able to be accepted, false otherwise.
-	bool AcceptQuest(FQuestStatusBlockFlags Flags);
+	// Returns true if quest is able to be started, false otherwise.
+	bool StartQuest(FProgressStatusBlockFlags Flags);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Returns true if quest is able to be abandoned, false otherwise.
-	bool AbandonQuest(FQuestStatusBlockFlags Flags);
+	bool AbandonQuest(FProgressStatusBlockFlags Flags);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Returns true if quest is able to be failed, false otherwise.
-	bool FailQuest(FQuestStatusBlockFlags Flags);
+	bool FailQuest(FProgressStatusBlockFlags Flags);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Returns true if quest is able to be completed, false otherwise.
-	bool CompleteQuest(FQuestStatusBlockFlags Flags);
+	bool CompleteQuest(FProgressStatusBlockFlags Flags);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Returns true if the compared ID is the same, false otherwise.
@@ -81,6 +85,10 @@ public:
 	UFUNCTION(BlueprintNativeEvent, Category = "Quest")
 	// Returns true if unlock conditions are met.
 	bool CheckUnlockConditions();
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Quest")
+	// Returns true if failure conditions are met.
+	bool CheckFailureConditions();
 
 	UFUNCTION(BlueprintNativeEvent, Category = "Quest")
 	// Returns true if completion conditions are met.
@@ -96,7 +104,7 @@ public:
 	void OnQuestUnlocked();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Quest")
-	void OnQuestAccepted();
+	void OnQuestStarted();
 	
 	UFUNCTION(BlueprintImplementableEvent, Category = "Quest")
 	void OnQuestAbandoned();

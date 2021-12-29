@@ -5,18 +5,18 @@
 #include "PublicObjectTypes.generated.h"
 
 UENUM(BlueprintType)
-enum class EQuestStatus : uint8
+enum class EProgressStatus : uint8
 {
 	Locked,
 	Unlocked,
-	Accepted,
+	Started,
 	Abandoned,
 	Failed,
 	Completed,
 };
 
 USTRUCT(BlueprintType)
-struct FQuestStatusBlockFlags
+struct FProgressStatusBlockFlags
 {
 	GENERATED_BODY()
 
@@ -32,7 +32,7 @@ public:
 	bool bBlockUnlocked;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "!bUseDefaultFlags"))
-	bool bBlockAccepted;
+	bool bBlockStarted;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "!bUseDefaultFlags"))
 	bool bBlockAbandoned;
