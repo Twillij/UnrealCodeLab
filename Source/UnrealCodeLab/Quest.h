@@ -83,14 +83,6 @@ public:
 	bool CompareQuestID(UQuest* OtherQuest);
 
 	UFUNCTION(BlueprintNativeEvent, Category = "Quest")
-	// Returns true if unlock conditions are met.
-	bool CheckUnlockConditions();
-
-	UFUNCTION(BlueprintNativeEvent, Category = "Quest")
-	// Returns true if failure conditions are met.
-	bool CheckFailureConditions();
-
-	UFUNCTION(BlueprintNativeEvent, Category = "Quest")
 	// Returns true if completion conditions are met.
 	bool CheckCompletionConditions();
 

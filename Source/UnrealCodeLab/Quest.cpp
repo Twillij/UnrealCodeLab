@@ -50,11 +50,6 @@ const TArray<UQuestObjective*>& UQuest::GetObjectives()
 
 bool UQuest::LockQuest(FProgressStatusBlockFlags Flags)
 {
-	if (Flags.bUseDefaultFlags)
-	{
-		Flags.bBlockLocked = true;
-	}
-
 	if (!IsQuestStatusBlocked(Flags))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Lock quest failed: Quest status is blocked."));
@@ -70,14 +65,6 @@ bool UQuest::LockQuest(FProgressStatusBlockFlags Flags)
 
 bool UQuest::UnlockQuest(FProgressStatusBlockFlags Flags)
 {
-	if (Flags.bUseDefaultFlags)
-	{
-		Flags.bBlockStarted = true;
-		Flags.bBlockAbandoned = true;
-		Flags.bBlockFailed = true;
-		Flags.bBlockCompleted = true;
-	}
-
 	if (IsQuestStatusBlocked(Flags))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Unlock quest failed: Quest status is blocked."));
@@ -93,13 +80,6 @@ bool UQuest::UnlockQuest(FProgressStatusBlockFlags Flags)
 
 bool UQuest::StartQuest(FProgressStatusBlockFlags Flags)
 {
-	if (Flags.bUseDefaultFlags)
-	{
-		Flags.bBlockLocked = true;
-		Flags.bBlockStarted = true;
-		Flags.bBlockCompleted = bIsRepeatable ? false : true;
-	}
-
 	if (IsQuestStatusBlocked(Flags))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Unlock quest failed: Quest status is blocked."));
@@ -115,15 +95,6 @@ bool UQuest::StartQuest(FProgressStatusBlockFlags Flags)
 
 bool UQuest::AbandonQuest(FProgressStatusBlockFlags Flags)
 {
-	if (Flags.bUseDefaultFlags)
-	{
-		Flags.bBlockLocked = true;
-		Flags.bBlockUnlocked = true;
-		Flags.bBlockAbandoned = true;
-		Flags.bBlockFailed = true;
-		Flags.bBlockCompleted = true;
-	}
-
 	if (IsQuestStatusBlocked(Flags))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Abandon quest failed: Quest status is blocked."));
@@ -139,15 +110,6 @@ bool UQuest::AbandonQuest(FProgressStatusBlockFlags Flags)
 
 bool UQuest::FailQuest(FProgressStatusBlockFlags Flags)
 {
-	if (Flags.bUseDefaultFlags)
-	{
-		Flags.bBlockLocked = true;
-		Flags.bBlockUnlocked = true;
-		Flags.bBlockAbandoned = true;
-		Flags.bBlockFailed = true;
-		Flags.bBlockCompleted = true;
-	}
-
 	if (IsQuestStatusBlocked(Flags))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Fail quest failed: Quest status is blocked."));
@@ -163,15 +125,6 @@ bool UQuest::FailQuest(FProgressStatusBlockFlags Flags)
 
 bool UQuest::CompleteQuest(FProgressStatusBlockFlags Flags)
 {
-	if (Flags.bUseDefaultFlags)
-	{
-		Flags.bBlockLocked = true;
-		Flags.bBlockUnlocked = true;
-		Flags.bBlockAbandoned = true;
-		Flags.bBlockFailed = true;
-		Flags.bBlockCompleted = true;
-	}
-
 	if (IsQuestStatusBlocked(Flags))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Complete quest failed: Quest status is blocked."));
@@ -190,23 +143,13 @@ bool UQuest::CompareQuestID(UQuest* OtherQuest)
 	return (QuestID.Compare(OtherQuest->QuestID) != 0) ? true : false;
 }
 
-bool UQuest::CheckUnlockConditions_Implementation()
-{
-	return true;
-}
-
-bool UQuest::CheckFailureConditions_Implementation()
-{
-	return false;
-}
-
 bool UQuest::CheckCompletionConditions_Implementation()
 {
 	bool bIsCompleted = true;
 
 	for (UQuestObjective* objective : QuestObjectives)
 	{
-		if (!objective->bIsCompleted)
+		if (objective->GetObjectiveStatus() != EProgressStatus::Completed)
 		{
 			bIsCompleted = false;
 			break;

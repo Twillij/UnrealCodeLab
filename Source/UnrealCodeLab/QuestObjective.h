@@ -41,14 +41,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsLocked;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	bool bIsCompleted;
-
 private:
 	EProgressStatus ObjectiveStatus;
 
 public:
 	bool IsObjectiveStatusBlocked(const FProgressStatusBlockFlags& Flags);
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	EProgressStatus GetObjectiveStatus();
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Returns true if objective is able to be locked, false otherwise.
@@ -58,27 +58,21 @@ public:
 	// Returns true if quest is able to be unlocked, false otherwise.
 	bool UnlockObjective(FProgressStatusBlockFlags Flags);
 
-	//UFUNCTION(BlueprintCallable, Category = "Quest")
-	//// Returns true if quest is able to be started, false otherwise.
-	//bool StartObjective(FProgressStatusBlockFlags Flags);
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	// Returns true if quest is able to be started, false otherwise.
+	bool StartObjective(FProgressStatusBlockFlags Flags);
 
-	//UFUNCTION(BlueprintCallable, Category = "Quest")
-	//// Returns true if quest is able to be abandoned, false otherwise.
-	//bool AbandonObjective(FProgressStatusBlockFlags Flags);
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	// Returns true if quest is able to be abandoned, false otherwise.
+	bool AbandonObjective(FProgressStatusBlockFlags Flags);
 
-	//UFUNCTION(BlueprintCallable, Category = "Quest")
-	//// Returns true if quest is able to be failed, false otherwise.
-	//bool FailObjective(FProgressStatusBlockFlags Flags);
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	// Returns true if quest is able to be failed, false otherwise.
+	bool FailObjective(FProgressStatusBlockFlags Flags);
 
-	//UFUNCTION(BlueprintCallable, Category = "Quest")
-	//// Returns true if quest is able to be completed, false otherwise.
-	//bool CompleteObjective(FProgressStatusBlockFlags Flags);
-
-	UFUNCTION(BlueprintCallable)
-	void SetObjectiveStatus(bool bIsComplete);
-
-	UFUNCTION(BlueprintNativeEvent)
-	bool CheckCompletionConditions();
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	// Returns true if quest is able to be completed, false otherwise.
+	bool CompleteObjective(FProgressStatusBlockFlags Flags);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnObjectiveLocked();

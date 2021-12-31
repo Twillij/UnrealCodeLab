@@ -13,24 +13,13 @@ bool UQuestObjective::IsObjectiveStatusBlocked(const FProgressStatusBlockFlags& 
 		(ObjectiveStatus == EProgressStatus::Completed && Flags.bBlockCompleted);
 }
 
-void UQuestObjective::SetObjectiveStatus(bool bIsComplete)
+EProgressStatus UQuestObjective::GetObjectiveStatus()
 {
-	if (bIsComplete && bIsLocked)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Set objective status failed: Objective is locked."));
-		return;
-	}
-
-	bIsCompleted = bIsComplete;
+	return ObjectiveStatus;
 }
 
 bool UQuestObjective::LockObjective(FProgressStatusBlockFlags Flags)
 {
-	if (Flags.bUseDefaultFlags)
-	{
-		Flags.bBlockLocked = true;
-	}
-
 	if (!IsObjectiveStatusBlocked(Flags))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Lock objective failed: Objective status is blocked."));
@@ -46,17 +35,9 @@ bool UQuestObjective::LockObjective(FProgressStatusBlockFlags Flags)
 
 bool UQuestObjective::UnlockObjective(FProgressStatusBlockFlags Flags)
 {
-	if (Flags.bUseDefaultFlags)
-	{
-		Flags.bBlockStarted = true;
-		Flags.bBlockAbandoned = true;
-		Flags.bBlockFailed = true;
-		Flags.bBlockCompleted = true;
-	}
-
 	if (!IsObjectiveStatusBlocked(Flags))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Lock objective failed: Objective status is blocked."));
+		UE_LOG(LogTemp, Warning, TEXT("Unlock objective failed: Objective status is blocked."));
 		return false;
 	}
 
@@ -67,7 +48,62 @@ bool UQuestObjective::UnlockObjective(FProgressStatusBlockFlags Flags)
 	return true;
 }
 
-bool UQuestObjective::CheckCompletionConditions_Implementation()
+bool UQuestObjective::StartObjective(FProgressStatusBlockFlags Flags)
 {
+	if (!IsObjectiveStatusBlocked(Flags))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Start objective failed: Objective status is blocked."));
+		return false;
+	}
+
+	ObjectiveStatus = EProgressStatus::Started;
+	OnObjectiveStarted();
+	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyObjectiveStarted.Broadcast(this);
+
+	return true;
+}
+
+bool UQuestObjective::AbandonObjective(FProgressStatusBlockFlags Flags)
+{
+	if (!IsObjectiveStatusBlocked(Flags))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Start objective failed: Objective status is blocked."));
+		return false;
+	}
+
+	ObjectiveStatus = EProgressStatus::Abandoned;
+	OnObjectiveAbandoned();
+	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyObjectiveAbandoned.Broadcast(this);
+
+	return true;
+}
+
+bool UQuestObjective::FailObjective(FProgressStatusBlockFlags Flags)
+{
+	if (!IsObjectiveStatusBlocked(Flags))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Start objective failed: Objective status is blocked."));
+		return false;
+	}
+
+	ObjectiveStatus = EProgressStatus::Failed;
+	OnObjectiveFailed();
+	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyObjectiveFailed.Broadcast(this);
+
+	return true;
+}
+
+bool UQuestObjective::CompleteObjective(FProgressStatusBlockFlags Flags)
+{
+	if (!IsObjectiveStatusBlocked(Flags))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Start objective failed: Objective status is blocked."));
+		return false;
+	}
+
+	ObjectiveStatus = EProgressStatus::Completed;
+	OnObjectiveCompleted();
+	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyObjectiveCompleted.Broadcast(this);
+
 	return true;
 }

@@ -68,13 +68,13 @@ UQuest* AQuestManager::GetQuestByID(FName QuestID)
 	return nullptr;
 }
 
-void AQuestManager::AddNewQuest(UQuest* NewQuest, bool bOverride)
+void AQuestManager::AddNewQuest(UQuest* NewQuest, bool bOverwriteDuplicateID)
 {
 	for (UQuest* quest : Quests)
 	{
 		if (quest->CompareQuestID(NewQuest))
 		{
-			if (bOverride)
+			if (bOverwriteDuplicateID)
 			{
 				Quests.Remove(quest);
 				break;

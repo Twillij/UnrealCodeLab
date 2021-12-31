@@ -22,24 +22,20 @@ struct FProgressStatusBlockFlags
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	// Set to true to ignore all the other flags and allow functions to handle the checks instead.
-	bool bUseDefaultFlags = true;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "!bUseDefaultFlags"))
 	bool bBlockLocked;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "!bUseDefaultFlags"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bBlockUnlocked;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "!bUseDefaultFlags"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bBlockStarted;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "!bUseDefaultFlags"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bBlockAbandoned;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "!bUseDefaultFlags"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bBlockFailed;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "!bUseDefaultFlags"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bBlockCompleted;
 };
