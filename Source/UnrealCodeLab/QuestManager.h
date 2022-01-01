@@ -5,10 +5,10 @@
 #include "PublicObjectTypes.h"
 #include "QuestManager.generated.h"
 
-class UQuest;
+class AQuest;
 class UQuestObjective;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestUpdated, UQuest*, Quest);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestUpdated, AQuest*, Quest);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnObjectiveUpdated, UQuestObjective*, Objective);
 
 UCLASS()
@@ -62,33 +62,33 @@ public:
 	FOnObjectiveUpdated OnAnyObjectiveCompleted;
 
 private:
-	TArray<UQuest*> Quests;
-	TArray<UQuest*> FilteredQuests;
+	TArray<AQuest*> Quests;
+	TArray<AQuest*> FilteredQuests;
 
 public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	const TArray<UQuest*>& GetAllQuests();
+	const TArray<AQuest*>& GetAllQuests();
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	const TArray<UQuest*>& GetQuestsByStatus(EProgressStatus Status);
+	const TArray<AQuest*>& GetQuestsByStatus(EProgressStatus Status);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	UQuest* GetQuestByID(FName QuestID);
+	AQuest* GetQuestByID(FName QuestID);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Adds a new quest to the manager's quest list, and performs any necessary initialisation.
 	// * bOverwriteDuplicateID = Whether the function overwrites any existing quest with the same ID.
-	void AddNewQuest(UQuest* NewQuest, bool bOverwriteDuplicateID = false);
+	void AddNewQuest(AQuest* NewQuest, bool bOverwriteDuplicateID = false);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	const TArray<UQuest*>& SortQuestsByDisplayName();
+	const TArray<AQuest*>& SortQuestsByDisplayName();
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	const TArray<UQuest*>& SortQuestsByID();
+	const TArray<AQuest*>& SortQuestsByID();
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	const TArray<UQuest*>& SortQuestByStatus();
+	const TArray<AQuest*>& SortQuestByStatus();
 };

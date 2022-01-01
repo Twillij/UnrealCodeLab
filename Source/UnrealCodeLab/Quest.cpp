@@ -4,7 +4,7 @@
 #include "QuestObjective.h"
 #include "QuestRewards.h"
 
-void UQuest::Init()
+void AQuest::Init()
 {
 	for (auto objectiveClass : QuestObjectiveClasses)
 	{
@@ -14,7 +14,7 @@ void UQuest::Init()
 	}
 }
 
-bool UQuest::IsQuestStatusBlocked(const FProgressStatusBlockFlags& Flags)
+bool AQuest::IsQuestStatusBlocked(const FProgressStatusBlockFlags& Flags)
 {
 	return (QuestStatus == EProgressStatus::Locked && Flags.bBlockLocked) ||
 		(QuestStatus == EProgressStatus::Unlocked && Flags.bBlockUnlocked) ||
@@ -24,12 +24,12 @@ bool UQuest::IsQuestStatusBlocked(const FProgressStatusBlockFlags& Flags)
 		(QuestStatus == EProgressStatus::Completed && Flags.bBlockCompleted);
 }
 
-EProgressStatus UQuest::GetQuestStatus()
+EProgressStatus AQuest::GetQuestStatus()
 {
 	return QuestStatus;
 }
 
-UQuestObjective* UQuest::GetObjectiveByID(FName ObjectiveID)
+UQuestObjective* AQuest::GetObjectiveByID(FName ObjectiveID)
 {
 	for (UQuestObjective* objective : QuestObjectives)
 	{
@@ -43,12 +43,12 @@ UQuestObjective* UQuest::GetObjectiveByID(FName ObjectiveID)
 	return nullptr;
 }
 
-const TArray<UQuestObjective*>& UQuest::GetObjectives()
+const TArray<UQuestObjective*>& AQuest::GetObjectives()
 {
 	return QuestObjectives;
 }
 
-bool UQuest::LockQuest(FProgressStatusBlockFlags Flags)
+bool AQuest::LockQuest(FProgressStatusBlockFlags Flags)
 {
 	if (!IsQuestStatusBlocked(Flags))
 	{
@@ -63,7 +63,7 @@ bool UQuest::LockQuest(FProgressStatusBlockFlags Flags)
 	return true;
 }
 
-bool UQuest::UnlockQuest(FProgressStatusBlockFlags Flags)
+bool AQuest::UnlockQuest(FProgressStatusBlockFlags Flags)
 {
 	if (IsQuestStatusBlocked(Flags))
 	{
@@ -78,7 +78,7 @@ bool UQuest::UnlockQuest(FProgressStatusBlockFlags Flags)
 	return true;
 }
 
-bool UQuest::StartQuest(FProgressStatusBlockFlags Flags)
+bool AQuest::StartQuest(FProgressStatusBlockFlags Flags)
 {
 	if (IsQuestStatusBlocked(Flags))
 	{
@@ -94,7 +94,7 @@ bool UQuest::StartQuest(FProgressStatusBlockFlags Flags)
 	return true;
 }
 
-bool UQuest::AbandonQuest(FProgressStatusBlockFlags Flags)
+bool AQuest::AbandonQuest(FProgressStatusBlockFlags Flags)
 {
 	if (IsQuestStatusBlocked(Flags))
 	{
@@ -110,7 +110,7 @@ bool UQuest::AbandonQuest(FProgressStatusBlockFlags Flags)
 	return true;
 }
 
-bool UQuest::FailQuest(FProgressStatusBlockFlags Flags)
+bool AQuest::FailQuest(FProgressStatusBlockFlags Flags)
 {
 	if (IsQuestStatusBlocked(Flags))
 	{
@@ -126,7 +126,7 @@ bool UQuest::FailQuest(FProgressStatusBlockFlags Flags)
 	return true;
 }
 
-bool UQuest::CompleteQuest(FProgressStatusBlockFlags Flags)
+bool AQuest::CompleteQuest(FProgressStatusBlockFlags Flags)
 {
 	if (IsQuestStatusBlocked(Flags))
 	{
@@ -142,12 +142,12 @@ bool UQuest::CompleteQuest(FProgressStatusBlockFlags Flags)
 	return true;
 }
 
-bool UQuest::CompareQuestID(UQuest* OtherQuest)
+bool AQuest::CompareQuestID(AQuest* OtherQuest)
 {
 	return (QuestID.Compare(OtherQuest->QuestID) != 0) ? true : false;
 }
 
-bool UQuest::CheckCompletionConditions_Implementation()
+bool AQuest::CheckCompletionConditions_Implementation()
 {
 	bool bIsCompleted = true;
 
@@ -163,13 +163,13 @@ bool UQuest::CheckCompletionConditions_Implementation()
 	return bIsCompleted;
 }
 
-void UQuest::OnQuestUpdated_Implementation()
+void AQuest::OnQuestUpdated_Implementation()
 {
 	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyQuestUpdated.Broadcast(this);
 	TimeLastUpdated = FDateTime::UtcNow();
 }
 
-void UQuest::ResetProgress_Implementation()
+void AQuest::ResetProgress_Implementation()
 {
 	for (UQuestObjective* objective : QuestObjectives)
 	{

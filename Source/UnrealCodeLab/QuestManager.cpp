@@ -34,16 +34,16 @@ void AQuestManager::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-const TArray<UQuest*>& AQuestManager::GetAllQuests()
+const TArray<AQuest*>& AQuestManager::GetAllQuests()
 {
 	return Quests;
 }
 
-const TArray<UQuest*>& AQuestManager::GetQuestsByStatus(EProgressStatus Status)
+const TArray<AQuest*>& AQuestManager::GetQuestsByStatus(EProgressStatus Status)
 {
 	FilteredQuests.Empty();
 
-	for (UQuest* quest : Quests)
+	for (AQuest* quest : Quests)
 	{
 		if (quest->GetQuestStatus() == Status)
 		{
@@ -54,9 +54,9 @@ const TArray<UQuest*>& AQuestManager::GetQuestsByStatus(EProgressStatus Status)
 	return FilteredQuests;
 }
 
-UQuest* AQuestManager::GetQuestByID(FName QuestID)
+AQuest* AQuestManager::GetQuestByID(FName QuestID)
 {
-	for (UQuest* quest : Quests)
+	for (AQuest* quest : Quests)
 	{
 		if (quest->QuestID == QuestID)
 		{
@@ -68,9 +68,9 @@ UQuest* AQuestManager::GetQuestByID(FName QuestID)
 	return nullptr;
 }
 
-void AQuestManager::AddNewQuest(UQuest* NewQuest, bool bOverwriteDuplicateID)
+void AQuestManager::AddNewQuest(AQuest* NewQuest, bool bOverwriteDuplicateID)
 {
-	for (UQuest* quest : Quests)
+	for (AQuest* quest : Quests)
 	{
 		if (quest->CompareQuestID(NewQuest))
 		{
@@ -91,7 +91,7 @@ void AQuestManager::AddNewQuest(UQuest* NewQuest, bool bOverwriteDuplicateID)
 	NewQuest->Init();
 }
 
-const TArray<UQuest*>& AQuestManager::SortQuestsByDisplayName()
+const TArray<AQuest*>& AQuestManager::SortQuestsByDisplayName()
 {
 	// Use selection sort
 	for (int i = 0; i < Quests.Num(); ++i)
@@ -111,7 +111,7 @@ const TArray<UQuest*>& AQuestManager::SortQuestsByDisplayName()
 		if (i != smallest)
 		{
 			// Swap the index of the array elements
-			UQuest* temp = Quests[i];
+			AQuest* temp = Quests[i];
 			Quests[i] = Quests[smallest];
 			Quests[smallest] = temp;
 		}
@@ -120,7 +120,7 @@ const TArray<UQuest*>& AQuestManager::SortQuestsByDisplayName()
 	return Quests;
 }
 
-const TArray<UQuest*>& AQuestManager::SortQuestsByID()
+const TArray<AQuest*>& AQuestManager::SortQuestsByID()
 {
 	// Use selection sort
 	for (int i = 0; i < Quests.Num(); ++i)
@@ -138,7 +138,7 @@ const TArray<UQuest*>& AQuestManager::SortQuestsByID()
 		if (i != smallest)
 		{
 			// Swap the index of the array elements
-			UQuest* temp = Quests[i];
+			AQuest* temp = Quests[i];
 			Quests[i] = Quests[smallest];
 			Quests[smallest] = temp;
 		}
@@ -147,7 +147,7 @@ const TArray<UQuest*>& AQuestManager::SortQuestsByID()
 	return Quests;
 }
 
-const TArray<UQuest*>& AQuestManager::SortQuestByStatus()
+const TArray<AQuest*>& AQuestManager::SortQuestByStatus()
 {
 	// Use selection sort
 	for (int i = 0; i < Quests.Num(); ++i)
@@ -171,7 +171,7 @@ const TArray<UQuest*>& AQuestManager::SortQuestByStatus()
 		if (i != smallest)
 		{
 			// Swap the index of the array elements
-			UQuest* temp = Quests[i];
+			AQuest* temp = Quests[i];
 			Quests[i] = Quests[smallest];
 			Quests[smallest] = temp;
 		}

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
+#include "GameFramework/Actor.h"
 #include "PublicObjectTypes.h"
 #include "Quest.generated.h"
 
@@ -9,7 +9,7 @@ class UQuestObjective;
 class UQuestRewards;
 
 UCLASS(Blueprintable)
-class UNREALCODELAB_API UQuest : public UObject
+class UNREALCODELAB_API AQuest : public AActor
 {
 	GENERATED_BODY()
 	
@@ -95,7 +95,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Returns true if the compared ID is the same, false otherwise.
-	bool CompareQuestID(UQuest* OtherQuest);
+	bool CompareQuestID(AQuest* OtherQuest);
 
 	UFUNCTION(BlueprintNativeEvent, Category = "Quest")
 	// Returns true if completion conditions are met.
