@@ -54,6 +54,7 @@ private:
 	EProgressStatus ObjectiveStatus;
 
 public:
+	// Returns true if the current objective status is being flagged to ignore.
 	bool IsObjectiveStatusBlocked(const FProgressStatusBlockFlags& Flags);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")

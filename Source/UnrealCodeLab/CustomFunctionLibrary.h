@@ -4,7 +4,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "CustomFunctionLibrary.generated.h"
 
-class AQuestManager;
+class UQuestManager;
 
 UCLASS()
 class UNREALCODELAB_API UCustomFunctionLibrary : public UBlueprintFunctionLibrary
@@ -13,5 +13,5 @@ class UNREALCODELAB_API UCustomFunctionLibrary : public UBlueprintFunctionLibrar
 	
 public:
 	UFUNCTION(BlueprintPure, meta = (WorldContext = "WorldContextObject"))
-	static AQuestManager* GetQuestManager(const UObject* WorldContextObject);
+	static UQuestManager* GetQuestManager(const UObject* WorldContextObject);
 };

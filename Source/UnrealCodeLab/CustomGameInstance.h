@@ -4,7 +4,7 @@
 #include "Engine/GameInstance.h"
 #include "CustomGameInstance.generated.h"
 
-class AQuestManager;
+class UQuestManager;
 
 UCLASS()
 class UNREALCODELAB_API UCustomGameInstance : public UGameInstance
@@ -13,14 +13,14 @@ class UNREALCODELAB_API UCustomGameInstance : public UGameInstance
 	
 public:
 	UPROPERTY(EditAnywhere, DisplayName = "Quest Manager")
-	TSubclassOf<AQuestManager> QuestManagerClass;
+	TSubclassOf<UQuestManager> QuestManagerClass;
 
 private:
-	AQuestManager* QuestManager;
+	UQuestManager* QuestManager;
 
 public:
 	virtual void Init() override;
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	AQuestManager* GetQuestManager();
+	UQuestManager* GetQuestManager();
 };

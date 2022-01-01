@@ -3,7 +3,7 @@
 #include "CustomGameInstance.h"
 #include "QuestManager.h"
 
-AQuestManager* UCustomFunctionLibrary::GetQuestManager(const UObject* WorldContextObject)
+UQuestManager* UCustomFunctionLibrary::GetQuestManager(const UObject* WorldContextObject)
 {
     if (UCustomGameInstance* instance = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(WorldContextObject)))
     {

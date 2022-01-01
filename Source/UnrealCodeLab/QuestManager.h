@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "UObject/Interface.h"
 #include "PublicObjectTypes.h"
 #include "QuestManager.generated.h"
 
@@ -12,13 +12,11 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestUpdated, AQuest*, Quest);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnObjectiveUpdated, UQuestObjective*, Objective);
 
 UCLASS()
-class UNREALCODELAB_API AQuestManager : public AActor
+class UNREALCODELAB_API UQuestManager : public UObject
 {
 	GENERATED_BODY()
 	
-public:	
-	AQuestManager();
-
+public:
 	UPROPERTY(BlueprintAssignable)
 	FOnQuestUpdated OnAnyQuestUpdated;
 
@@ -66,8 +64,7 @@ private:
 	TArray<AQuest*> FilteredQuests;
 
 public:
-	virtual void BeginPlay() override;
-	virtual void Tick(float DeltaTime) override;
+	void Init();
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	const TArray<AQuest*>& GetAllQuests();

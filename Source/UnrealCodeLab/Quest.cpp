@@ -4,16 +4,6 @@
 #include "QuestObjective.h"
 #include "QuestRewards.h"
 
-void AQuest::Init()
-{
-	for (auto objectiveClass : QuestObjectiveClasses)
-	{
-		UQuestObjective* objective = NewObject<UQuestObjective>(this, objectiveClass);
-		objective->OwningQuest = this;
-		QuestObjectives.Add(objective);
-	}
-}
-
 bool AQuest::IsQuestStatusBlocked(const FProgressStatusBlockFlags& Flags)
 {
 	return (QuestStatus == EProgressStatus::Locked && Flags.bBlockLocked) ||
@@ -174,5 +164,17 @@ void AQuest::ResetProgress_Implementation()
 	for (UQuestObjective* objective : QuestObjectives)
 	{
 		objective->ResetProgress();
+	}
+}
+
+void AQuest::BeginPlay()
+{
+	Super::BeginPlay();
+
+	for (auto objectiveClass : QuestObjectiveClasses)
+	{
+		UQuestObjective* objective = NewObject<UQuestObjective>(this, objectiveClass);
+		objective->OwningQuest = this;
+		QuestObjectives.Add(objective);
 	}
 }

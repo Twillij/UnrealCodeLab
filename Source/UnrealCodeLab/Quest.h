@@ -55,8 +55,6 @@ private:
 	TArray<UQuestObjective*> QuestObjectives;
 
 public:
-	void Init();
-
 	// Returns true if the current quest status is being flagged to ignore.
 	bool IsQuestStatusBlocked(const FProgressStatusBlockFlags& Flags);
 
@@ -124,4 +122,7 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Quest")
 	void OnQuestCompleted();
+
+protected:
+	virtual void BeginPlay() override;
 };

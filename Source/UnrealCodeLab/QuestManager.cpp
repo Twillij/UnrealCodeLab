@@ -2,18 +2,8 @@
 #include "Quest.h"
 #include "QuestObjective.h"
 
-// Sets default values
-AQuestManager::AQuestManager()
+void UQuestManager::Init()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-}
-
-// Called when the game starts or when spawned
-void AQuestManager::BeginPlay()
-{
-	Super::BeginPlay();
-
 #if !UE_BUILD_SHIPPING
 	for (int i = 0; i < Quests.Num(); ++i)
 	{
@@ -28,18 +18,12 @@ void AQuestManager::BeginPlay()
 #endif
 }
 
-// Called every frame
-void AQuestManager::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
-const TArray<AQuest*>& AQuestManager::GetAllQuests()
+const TArray<AQuest*>& UQuestManager::GetAllQuests()
 {
 	return Quests;
 }
 
-const TArray<AQuest*>& AQuestManager::GetQuestsByStatus(EProgressStatus Status)
+const TArray<AQuest*>& UQuestManager::GetQuestsByStatus(EProgressStatus Status)
 {
 	FilteredQuests.Empty();
 
@@ -54,7 +38,7 @@ const TArray<AQuest*>& AQuestManager::GetQuestsByStatus(EProgressStatus Status)
 	return FilteredQuests;
 }
 
-AQuest* AQuestManager::GetQuestByID(FName QuestID)
+AQuest* UQuestManager::GetQuestByID(FName QuestID)
 {
 	for (AQuest* quest : Quests)
 	{
@@ -68,7 +52,7 @@ AQuest* AQuestManager::GetQuestByID(FName QuestID)
 	return nullptr;
 }
 
-void AQuestManager::AddNewQuest(AQuest* NewQuest, bool bOverwriteDuplicateID)
+void UQuestManager::AddNewQuest(AQuest* NewQuest, bool bOverwriteDuplicateID)
 {
 	for (AQuest* quest : Quests)
 	{
@@ -88,10 +72,9 @@ void AQuestManager::AddNewQuest(AQuest* NewQuest, bool bOverwriteDuplicateID)
 	}
 
 	Quests.Add(NewQuest);
-	NewQuest->Init();
 }
 
-const TArray<AQuest*>& AQuestManager::SortQuestsByDisplayName()
+const TArray<AQuest*>& UQuestManager::SortQuestsByDisplayName()
 {
 	// Use selection sort
 	for (int i = 0; i < Quests.Num(); ++i)
@@ -120,7 +103,7 @@ const TArray<AQuest*>& AQuestManager::SortQuestsByDisplayName()
 	return Quests;
 }
 
-const TArray<AQuest*>& AQuestManager::SortQuestsByID()
+const TArray<AQuest*>& UQuestManager::SortQuestsByID()
 {
 	// Use selection sort
 	for (int i = 0; i < Quests.Num(); ++i)
@@ -147,7 +130,7 @@ const TArray<AQuest*>& AQuestManager::SortQuestsByID()
 	return Quests;
 }
 
-const TArray<AQuest*>& AQuestManager::SortQuestByStatus()
+const TArray<AQuest*>& UQuestManager::SortQuestByStatus()
 {
 	// Use selection sort
 	for (int i = 0; i < Quests.Num(); ++i)
