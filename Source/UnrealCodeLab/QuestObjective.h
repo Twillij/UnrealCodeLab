@@ -40,6 +40,15 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsLocked;
+	
+	UPROPERTY(BlueprintReadOnly)
+	FDateTime TimeLastStarted;
+
+	UPROPERTY(BlueprintReadOnly)
+	FDateTime TimeLastUpdated;
+
+	UPROPERTY(BlueprintReadOnly)
+	FDateTime TimeLastCompleted;
 
 private:
 	EProgressStatus ObjectiveStatus;
@@ -73,6 +82,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Returns true if quest is able to be completed, false otherwise.
 	bool CompleteObjective(FProgressStatusBlockFlags Flags);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void OnObjectiveUpdated();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnObjectiveLocked();

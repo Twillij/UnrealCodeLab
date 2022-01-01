@@ -8,8 +8,8 @@
 class UQuest;
 class UQuestObjective;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestStatusChanged, UQuest*, Quest);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnObjectiveStatusChanged, UQuestObjective*, Objective);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestUpdated, UQuest*, Quest);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnObjectiveUpdated, UQuestObjective*, Objective);
 
 UCLASS()
 class UNREALCODELAB_API AQuestManager : public AActor
@@ -20,46 +20,52 @@ public:
 	AQuestManager();
 
 	UPROPERTY(BlueprintAssignable)
-	FOnQuestStatusChanged OnAnyQuestLocked;
+	FOnQuestUpdated OnAnyQuestUpdated;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnQuestStatusChanged OnAnyQuestUnlocked;
+	FOnQuestUpdated OnAnyQuestLocked;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnQuestStatusChanged OnAnyQuestStarted;
+	FOnQuestUpdated OnAnyQuestUnlocked;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnQuestStatusChanged OnAnyQuestAbandoned;
+	FOnQuestUpdated OnAnyQuestStarted;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnQuestStatusChanged OnAnyQuestFailed;
+	FOnQuestUpdated OnAnyQuestAbandoned;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnQuestStatusChanged OnAnyQuestCompleted;
+	FOnQuestUpdated OnAnyQuestFailed;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnObjectiveStatusChanged OnAnyObjectiveLocked;
+	FOnQuestUpdated OnAnyQuestCompleted;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnObjectiveStatusChanged OnAnyObjectiveUnlocked;
+	FOnObjectiveUpdated OnAnyObjectiveUpdated;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnObjectiveStatusChanged OnAnyObjectiveStarted;
+	FOnObjectiveUpdated OnAnyObjectiveLocked;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnObjectiveStatusChanged OnAnyObjectiveAbandoned;
+	FOnObjectiveUpdated OnAnyObjectiveUnlocked;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnObjectiveStatusChanged OnAnyObjectiveFailed;
+	FOnObjectiveUpdated OnAnyObjectiveStarted;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnObjectiveStatusChanged OnAnyObjectiveCompleted;
+	FOnObjectiveUpdated OnAnyObjectiveAbandoned;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnObjectiveUpdated OnAnyObjectiveFailed;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnObjectiveUpdated OnAnyObjectiveCompleted;
 
 private:
 	TArray<UQuest*> Quests;
 	TArray<UQuest*> FilteredQuests;
 
-public:	
+public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
@@ -74,7 +80,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Adds a new quest to the manager's quest list, and performs any necessary initialisation.
-	// * bOverride = Whether the function overrides any existing quest with the same ID.
+	// * bOverwriteDuplicateID = Whether the function overwrites any existing quest with the same ID.
 	void AddNewQuest(UQuest* NewQuest, bool bOverwriteDuplicateID = false);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")

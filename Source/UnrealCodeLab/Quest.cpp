@@ -89,6 +89,7 @@ bool UQuest::StartQuest(FProgressStatusBlockFlags Flags)
 	QuestStatus = EProgressStatus::Started;
 	OnQuestStarted();
 	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyQuestStarted.Broadcast(this);
+	TimeLastStarted = FDateTime::UtcNow();
 
 	return true;
 }
@@ -104,6 +105,7 @@ bool UQuest::AbandonQuest(FProgressStatusBlockFlags Flags)
 	QuestStatus = EProgressStatus::Abandoned;
 	OnQuestAbandoned();
 	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyQuestAbandoned.Broadcast(this);
+	TimeLastUpdated = FDateTime::UtcNow();
 
 	return true;
 }
@@ -119,6 +121,7 @@ bool UQuest::FailQuest(FProgressStatusBlockFlags Flags)
 	QuestStatus = EProgressStatus::Failed;
 	OnQuestFailed();
 	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyQuestFailed.Broadcast(this);
+	TimeLastUpdated = FDateTime::UtcNow();
 
 	return true;
 }
@@ -134,6 +137,7 @@ bool UQuest::CompleteQuest(FProgressStatusBlockFlags Flags)
 	QuestStatus = EProgressStatus::Completed;
 	OnQuestCompleted();
 	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyQuestCompleted.Broadcast(this);
+	TimeLastCompleted = FDateTime::UtcNow();
 
 	return true;
 }
@@ -157,6 +161,12 @@ bool UQuest::CheckCompletionConditions_Implementation()
 	}
 
 	return bIsCompleted;
+}
+
+void UQuest::OnQuestUpdated_Implementation()
+{
+	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyQuestUpdated.Broadcast(this);
+	TimeLastUpdated = FDateTime::UtcNow();
 }
 
 void UQuest::ResetProgress_Implementation()

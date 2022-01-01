@@ -29,11 +29,26 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsRepeatable;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bAllowRetryAbandoned;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int MaxAllowedFails;
+
 	UPROPERTY(EditAnywhere, DisplayName = "Objectives")
 	TArray<TSubclassOf<UQuestObjective>> QuestObjectiveClasses;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UQuestRewards* QuestRewards;
+
+	UPROPERTY(BlueprintReadOnly)
+	FDateTime TimeLastStarted;
+
+	UPROPERTY(BlueprintReadOnly)
+	FDateTime TimeLastUpdated;
+
+	UPROPERTY(BlueprintReadOnly)
+	FDateTime TimeLastCompleted;
 
 private:
 	EProgressStatus QuestStatus;
@@ -85,6 +100,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, Category = "Quest")
 	// Returns true if completion conditions are met.
 	bool CheckCompletionConditions();
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Quest")
+	void OnQuestUpdated();
 
 	UFUNCTION(BlueprintNativeEvent, Category = "Quest")
 	void ResetProgress();

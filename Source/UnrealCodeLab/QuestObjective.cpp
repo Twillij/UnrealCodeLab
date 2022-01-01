@@ -59,6 +59,7 @@ bool UQuestObjective::StartObjective(FProgressStatusBlockFlags Flags)
 	ObjectiveStatus = EProgressStatus::Started;
 	OnObjectiveStarted();
 	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyObjectiveStarted.Broadcast(this);
+	TimeLastStarted = FDateTime::UtcNow();
 
 	return true;
 }
@@ -74,6 +75,7 @@ bool UQuestObjective::AbandonObjective(FProgressStatusBlockFlags Flags)
 	ObjectiveStatus = EProgressStatus::Abandoned;
 	OnObjectiveAbandoned();
 	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyObjectiveAbandoned.Broadcast(this);
+	TimeLastUpdated = FDateTime::UtcNow();
 
 	return true;
 }
@@ -89,6 +91,7 @@ bool UQuestObjective::FailObjective(FProgressStatusBlockFlags Flags)
 	ObjectiveStatus = EProgressStatus::Failed;
 	OnObjectiveFailed();
 	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyObjectiveFailed.Broadcast(this);
+	TimeLastUpdated = FDateTime::UtcNow();
 
 	return true;
 }
@@ -104,6 +107,14 @@ bool UQuestObjective::CompleteObjective(FProgressStatusBlockFlags Flags)
 	ObjectiveStatus = EProgressStatus::Completed;
 	OnObjectiveCompleted();
 	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyObjectiveCompleted.Broadcast(this);
+	TimeLastCompleted = FDateTime::UtcNow();
 
 	return true;
+}
+
+void UQuestObjective::OnObjectiveUpdated_Implementation()
+{
+	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyObjectiveUpdated.Broadcast(this);
+	TimeLastUpdated = FDateTime::UtcNow();
+	OwningQuest->OnQuestUpdated();
 }
