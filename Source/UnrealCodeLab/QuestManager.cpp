@@ -9,7 +9,7 @@ void UQuestManager::Init()
 	{
 		for (int j = i + 1; j < Quests.Num(); ++j)
 		{
-			if (Quests[i]->CompareQuestID(Quests[j]))
+			if (Quests[i]->QuestID == Quests[j]->QuestID)
 			{
 				UE_LOG(LogTemp, Warning, TEXT("Found a duplicate quest ID: %s"), *Quests[i]->QuestID.ToString());
 			}
@@ -52,22 +52,31 @@ AQuest* UQuestManager::GetQuestByID(FName QuestID)
 	return nullptr;
 }
 
-void UQuestManager::AddNewQuest(AQuest* NewQuest, bool bOverwriteDuplicateID)
+bool UQuestManager::DoesQuestIDExist(FName QuestID)
 {
 	for (AQuest* quest : Quests)
 	{
-		if (quest->CompareQuestID(NewQuest))
+		if (quest->QuestID == QuestID)
 		{
-			if (bOverwriteDuplicateID)
-			{
-				Quests.Remove(quest);
-				break;
-			}
-			else
-			{
-				UE_LOG(LogTemp, Warning, TEXT("Adding new quest failed: Quest ID already exists"));
-				return;
-			}
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void UQuestManager::AddNewQuest(AQuest* NewQuest, bool bOverwriteDuplicateID)
+{
+	if (AQuest* quest = GetQuestByID(NewQuest->QuestID))
+	{
+		if (bOverwriteDuplicateID)
+		{
+			Quests.Remove(quest);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Adding new quest failed: Quest ID already exists"));
+			return;
 		}
 	}
 

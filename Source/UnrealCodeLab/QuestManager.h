@@ -76,6 +76,10 @@ public:
 	AQuest* GetQuestByID(FName QuestID);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
+	// Returns true if quest ID exist in the quest list.
+	bool DoesQuestIDExist(FName QuestID);
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Adds a new quest to the manager's quest list, and performs any necessary initialisation.
 	// * bOverwriteDuplicateID = Whether the function overwrites any existing quest with the same ID.
 	void AddNewQuest(AQuest* NewQuest, bool bOverwriteDuplicateID = false);

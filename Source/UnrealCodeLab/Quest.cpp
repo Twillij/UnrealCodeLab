@@ -132,11 +132,6 @@ bool AQuest::CompleteQuest(FProgressStatusBlockFlags Flags)
 	return true;
 }
 
-bool AQuest::CompareQuestID(AQuest* OtherQuest)
-{
-	return (QuestID.Compare(OtherQuest->QuestID) != 0) ? true : false;
-}
-
 bool AQuest::CheckCompletionConditions_Implementation()
 {
 	bool bIsCompleted = true;

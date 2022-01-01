@@ -91,10 +91,6 @@ public:
 	// Returns true if quest is able to be completed, false otherwise.
 	bool CompleteQuest(FProgressStatusBlockFlags Flags);
 
-	UFUNCTION(BlueprintCallable, Category = "Quest")
-	// Returns true if the compared ID is the same, false otherwise.
-	bool CompareQuestID(AQuest* OtherQuest);
-
 	UFUNCTION(BlueprintNativeEvent, Category = "Quest")
 	// Returns true if completion conditions are met.
 	bool CheckCompletionConditions();
