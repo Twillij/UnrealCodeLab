@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "QuestInterface.generated.h"
+#include "QuestObjectiveEntity.generated.h"
 
 class UQuestManager;
 

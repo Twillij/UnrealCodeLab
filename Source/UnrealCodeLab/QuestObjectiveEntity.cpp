@@ -1,2 +1,1 @@
-#include "QuestInterface.h"
-#include "QuestManager.h"
+#include "QuestObjectiveEntity.h"
