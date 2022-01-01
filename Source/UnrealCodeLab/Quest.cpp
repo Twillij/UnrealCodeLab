@@ -21,7 +21,7 @@ EProgressStatus AQuest::GetQuestStatus()
 
 UQuestObjective* AQuest::GetObjectiveByID(FName ObjectiveID)
 {
-	for (UQuestObjective* objective : QuestObjectives)
+	for (UQuestObjective* objective : Objectives)
 	{
 		if (objective->ObjectiveID == ObjectiveID)
 		{
@@ -35,7 +35,98 @@ UQuestObjective* AQuest::GetObjectiveByID(FName ObjectiveID)
 
 const TArray<UQuestObjective*>& AQuest::GetObjectives()
 {
-	return QuestObjectives;
+	return Objectives;
+}
+
+const TArray<UQuestObjective*>& AQuest::GetActiveObjectiveGroup()
+{
+	return ActiveObjectiveGroup;
+}
+
+TArray<UQuestObjective*> AQuest::GetObjectivesByGroupIndex(int Index, bool bEqualsIndex)
+{
+	TArray<UQuestObjective*> groupedObjectives;
+
+	if (Index < 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Get objectives by group index failed: Invalid objective group index %i"), Index);
+	}
+
+	for (UQuestObjective* objective : Objectives)
+	{
+		if (bEqualsIndex && objective->ObjectiveGroupIndex == Index)
+		{
+			groupedObjectives.Add(objective);
+		}
+		else if (!bEqualsIndex && objective->ObjectiveGroupIndex != Index)
+		{
+			groupedObjectives.Add(objective);
+		}
+	}
+
+	return groupedObjectives;
+}
+
+void AQuest::SetActiveObjectiveGroup(int GroupIndex, bool bHideInactiveGroups)
+{
+	if (GroupIndex < 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Get objectives by group index failed: Invalid objective group index %i"), GroupIndex);
+		return;
+	}
+
+	TArray<UQuestObjective*> newActiveObjectives = GetObjectivesByGroupIndex(GroupIndex);
+	
+	if (newActiveObjectives.Num() > 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Get objectives by group index failed: Cannot find objectives of group index %i"), GroupIndex);
+		return;
+	}
+
+	if (bHideInactiveGroups)
+	{
+		for (UQuestObjective* objective : Objectives)
+		{
+			objective->bIsHidden = (objective->ObjectiveGroupIndex != GroupIndex) ? true : objective->bIsHidden;
+		}
+	}
+
+	ActiveObjectiveGroup = newActiveObjectives;
+}
+
+bool AQuest::SetQuestStatus(EProgressStatus NewStatus, FProgressStatusBlockFlags Flags)
+{
+	if (QuestStatus == NewStatus)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Set quest status failed: Passed status is the same as current status"));
+		return false;
+	}
+	else if (NewStatus == EProgressStatus::Locked)
+	{
+		return LockQuest(Flags);
+	}
+	else if (NewStatus == EProgressStatus::Unlocked)
+	{
+		return UnlockQuest(Flags);
+	}
+	else if (NewStatus == EProgressStatus::Started)
+	{
+		return StartQuest(Flags);
+	}
+	else if (NewStatus == EProgressStatus::Abandoned)
+	{
+		return AbandonQuest(Flags);
+	}
+	else if (NewStatus == EProgressStatus::Failed)
+	{
+		return FailQuest(Flags);
+	}
+	else if (NewStatus == EProgressStatus::Completed)
+	{
+		return CompleteQuest(Flags);
+	}
+
+	return false;
 }
 
 bool AQuest::LockQuest(FProgressStatusBlockFlags Flags)
@@ -136,7 +227,7 @@ bool AQuest::CheckCompletionConditions_Implementation()
 {
 	bool bIsCompleted = true;
 
-	for (UQuestObjective* objective : QuestObjectives)
+	for (UQuestObjective* objective : Objectives)
 	{
 		if (objective->GetObjectiveStatus() != EProgressStatus::Completed)
 		{
@@ -156,7 +247,7 @@ void AQuest::OnQuestUpdated_Implementation()
 
 void AQuest::ResetProgress_Implementation()
 {
-	for (UQuestObjective* objective : QuestObjectives)
+	for (UQuestObjective* objective : Objectives)
 	{
 		objective->ResetProgress();
 	}
@@ -170,6 +261,6 @@ void AQuest::BeginPlay()
 	{
 		UQuestObjective* objective = NewObject<UQuestObjective>(this, objectiveClass);
 		objective->OwningQuest = this;
-		QuestObjectives.Add(objective);
+		Objectives.Add(objective);
 	}
 }

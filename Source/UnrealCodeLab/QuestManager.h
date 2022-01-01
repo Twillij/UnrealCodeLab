@@ -17,6 +17,9 @@ class UNREALCODELAB_API UQuestManager : public UObject
 	GENERATED_BODY()
 	
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "0"))
+	int MaxTrackedQuests = 1;
+
 	UPROPERTY(BlueprintAssignable)
 	FOnQuestUpdated OnAnyQuestUpdated;
 
@@ -61,7 +64,7 @@ public:
 
 private:
 	TArray<AQuest*> Quests;
-	TArray<AQuest*> FilteredQuests;
+	TArray<AQuest*> TrackedQuests;
 
 public:
 	void Init();
@@ -70,7 +73,10 @@ public:
 	const TArray<AQuest*>& GetAllQuests();
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	const TArray<AQuest*>& GetQuestsByStatus(EProgressStatus Status);
+	const TArray<AQuest*>& GetTrackedQuests();
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	TArray<AQuest*> GetQuestsByStatus(EProgressStatus Status);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	AQuest* GetQuestByID(FName QuestID);
@@ -83,6 +89,9 @@ public:
 	// Adds a new quest to the manager's quest list, and performs any necessary initialisation.
 	// * bOverwriteDuplicateID = Whether the function overwrites any existing quest with the same ID.
 	void AddNewQuest(AQuest* NewQuest, bool bOverwriteDuplicateID = false);
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	void TrackQuest(AQuest* Quest, bool bReplaceOldest = false);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	const TArray<AQuest*>& SortQuestsByDisplayName();

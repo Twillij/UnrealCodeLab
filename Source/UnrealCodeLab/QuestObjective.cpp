@@ -18,6 +18,41 @@ EProgressStatus UQuestObjective::GetObjectiveStatus()
 	return ObjectiveStatus;
 }
 
+bool UQuestObjective::SetObjectiveStatus(EProgressStatus NewStatus, FProgressStatusBlockFlags Flags)
+{
+	if (ObjectiveStatus == NewStatus)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Set objective status failed: Passed status is the same as current status"));
+		return false;
+	}
+	else if (NewStatus == EProgressStatus::Locked)
+	{
+		return LockObjective(Flags);
+	}
+	else if (NewStatus == EProgressStatus::Unlocked)
+	{
+		return UnlockObjective(Flags);
+	}
+	else if (NewStatus == EProgressStatus::Started)
+	{
+		return StartObjective(Flags);
+	}
+	else if (NewStatus == EProgressStatus::Abandoned)
+	{
+		return AbandonObjective(Flags);
+	}
+	else if (NewStatus == EProgressStatus::Failed)
+	{
+		return FailObjective(Flags);
+	}
+	else if (NewStatus == EProgressStatus::Completed)
+	{
+		return CompleteObjective(Flags);
+	}
+
+	return false;
+}
+
 bool UQuestObjective::LockObjective(FProgressStatusBlockFlags Flags)
 {
 	if (!IsObjectiveStatusBlocked(Flags))

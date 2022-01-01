@@ -23,19 +23,24 @@ const TArray<AQuest*>& UQuestManager::GetAllQuests()
 	return Quests;
 }
 
-const TArray<AQuest*>& UQuestManager::GetQuestsByStatus(EProgressStatus Status)
+const TArray<AQuest*>& UQuestManager::GetTrackedQuests()
 {
-	FilteredQuests.Empty();
+	return TrackedQuests;
+}
+
+TArray<AQuest*> UQuestManager::GetQuestsByStatus(EProgressStatus Status)
+{
+	TArray<AQuest*> filteredQuests;
 
 	for (AQuest* quest : Quests)
 	{
 		if (quest->GetQuestStatus() == Status)
 		{
-			FilteredQuests.Add(quest);
+			filteredQuests.Add(quest);
 		}
 	}
 
-	return FilteredQuests;
+	return filteredQuests;
 }
 
 AQuest* UQuestManager::GetQuestByID(FName QuestID)
@@ -48,7 +53,6 @@ AQuest* UQuestManager::GetQuestByID(FName QuestID)
 		}
 	}
 
-	UE_LOG(LogTemp, Error, TEXT("Get quest failed: Invalid ID"));
 	return nullptr;
 }
 
@@ -75,12 +79,30 @@ void UQuestManager::AddNewQuest(AQuest* NewQuest, bool bOverwriteDuplicateID)
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Adding new quest failed: Quest ID already exists"));
+			UE_LOG(LogTemp, Warning, TEXT("Add new quest failed: Quest ID already exists"));
 			return;
 		}
 	}
 
 	Quests.Add(NewQuest);
+}
+
+void UQuestManager::TrackQuest(AQuest* Quest, bool bReplaceOldest)
+{
+	if (TrackedQuests.Num() >= MaxTrackedQuests)
+	{
+		if (bReplaceOldest && TrackedQuests.Num() > 0)
+		{
+			TrackedQuests.RemoveAt(0);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Track quest failed: Max tracked quests reached."));
+			return;
+		}
+	}
+
+	TrackedQuests.Add(Quest);
 }
 
 const TArray<AQuest*>& UQuestManager::SortQuestsByDisplayName()

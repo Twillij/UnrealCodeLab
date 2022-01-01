@@ -29,6 +29,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FName ObjectiveID;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (ClampMin = "0"))
+	int ObjectiveGroupIndex;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "Description")
 	FText ObjectiveDescription;
 
@@ -61,6 +64,11 @@ public:
 	EProgressStatus GetObjectiveStatus();
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
+	// Convenience function that calls the appropriate status changing function depending on the NewStatus passed.
+	// Preliminarily returns false if NewStatus is the same as current objective status.
+	bool SetObjectiveStatus(EProgressStatus NewStatus, FProgressStatusBlockFlags Flags);
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Returns true if objective is able to be locked, false otherwise.
 	bool LockObjective(FProgressStatusBlockFlags Flags);
 
@@ -84,7 +92,10 @@ public:
 	// Returns true if quest is able to be completed, false otherwise.
 	bool CompleteObjective(FProgressStatusBlockFlags Flags);
 
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void ResetProgress();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnObjectiveUpdated();
 
 	UFUNCTION(BlueprintImplementableEvent)
@@ -104,7 +115,4 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnObjectiveCompleted();
-
-	UFUNCTION(BlueprintImplementableEvent)
-	void ResetProgress();
 };
