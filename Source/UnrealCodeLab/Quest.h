@@ -14,43 +14,46 @@ class UNREALCODELAB_API AQuest : public AActor
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Quest")
 	FName QuestID;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "Display Name")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "Display Name", Category = "Quest")
 	FText QuestDisplayName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "Description")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "Description", Category = "Quest")
 	FText QuestDescription;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	bool bIsHidden;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	bool bIsRepeatable;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	bool bAllowRetryAbandoned;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	int MaxAllowedFails;
 
-	UPROPERTY(EditAnywhere, DisplayName = "Objectives")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+	int MinReqLevel;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Objectives", Category = "Quest")
 	TArray<TSubclassOf<UQuestObjective>> QuestObjectiveClasses;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	UQuestRewards* QuestRewards;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Category = "Quest")
 	int ActiveObjectiveGroupIndex;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Category = "Quest")
 	FDateTime TimeLastStarted;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Category = "Quest")
 	FDateTime TimeLastUpdated;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Category = "Quest")
 	FDateTime TimeLastCompleted;
 
 private:

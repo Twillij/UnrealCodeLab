@@ -14,7 +14,7 @@ enum class EQuestObjectiveType : uint8
 	Travel,
 	Interact,
 	Collect,
-	Slay
+	Kill
 };
 
 UCLASS(Blueprintable)
@@ -40,10 +40,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsHidden;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bIsLocked;
-	
+
 	UPROPERTY(BlueprintReadOnly)
 	FDateTime TimeLastStarted;
 

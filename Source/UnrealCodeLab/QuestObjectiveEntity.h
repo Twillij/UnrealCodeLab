@@ -4,7 +4,7 @@
 #include "UObject/Interface.h"
 #include "QuestObjectiveEntity.generated.h"
 
-class UQuestManager;
+class UQuestObjective;
 
 UINTERFACE(MinimalAPI, BlueprintType)
 class UQuestObjectiveEntity : public UInterface
@@ -17,5 +17,9 @@ class UNREALCODELAB_API IQuestObjectiveEntity
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	const TArray<UQuestObjective*>& GetRelatedQuestObjectives();
 
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	bool IsEntityActive();
 };
