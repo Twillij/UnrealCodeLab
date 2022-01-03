@@ -4,12 +4,14 @@
 #include "QuestObjective.h"
 #include "QuestRewards.h"
 
-void UQuest::Init()
+void UQuest::Init(UQuestManager* OwningQuestManager)
 {
+	QuestManager = OwningQuestManager;
+
 	for (auto objectiveClass : QuestObjectiveClasses)
 	{
 		UQuestObjective* objective = NewObject<UQuestObjective>(this, objectiveClass);
-		objective->OwningQuest = this;
+		objective->Init(this);
 		Objectives.Add(objective);
 	}
 }
@@ -39,7 +41,19 @@ UQuestObjective* UQuest::GetObjectiveByID(FName ObjectiveID)
 		}
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Could not find objective ID: %s"), *ObjectiveID.ToString());
+	return nullptr;
+}
+
+UQuestObjective* UQuest::GetObjectiveByClass(TSubclassOf<UQuestObjective> ObjectiveClass)
+{
+	for (UQuestObjective* objective : Objectives)
+	{
+		if (objective->GetClass() == ObjectiveClass)
+		{
+			return objective;
+		}
+	}
+
 	return nullptr;
 }
 
@@ -102,6 +116,11 @@ void UQuest::SetActiveObjectiveGroup(int GroupIndex, bool bHideInactiveGroups)
 	}
 
 	ActiveObjectiveGroup = newActiveObjectives;
+}
+
+bool UQuest::HasQuestManager()
+{
+	return QuestManager->IsValidLowLevel();
 }
 
 bool UQuest::SetQuestStatus(EProgressStatus NewStatus, FProgressStatusBlockFlags Flags)

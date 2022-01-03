@@ -79,6 +79,9 @@ public:
 	TArray<UQuest*> GetQuestsByStatus(EProgressStatus Status);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
+	UQuest* GetQuestByClass(TSubclassOf<UQuest> QuestClass);
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
 	UQuest* GetQuestByID(FName QuestID);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")

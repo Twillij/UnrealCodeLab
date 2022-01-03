@@ -24,7 +24,7 @@ class UNREALCODELAB_API UQuestObjective : public UObject
 
 public:
 	UPROPERTY(BlueprintReadOnly)
-	UQuest* OwningQuest;
+	UQuest* Quest;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FName ObjectiveID;
@@ -54,6 +54,8 @@ private:
 	EProgressStatus ObjectiveStatus;
 
 public:
+	void Init(UQuest* OwningQuest);
+
 	// Returns true if the current objective status is being flagged to ignore.
 	bool IsObjectiveStatusBlocked(const FProgressStatusBlockFlags& Flags);
 

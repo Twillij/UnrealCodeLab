@@ -3,6 +3,11 @@
 #include "Quest.h"
 #include "QuestManager.h"
 
+void UQuestObjective::Init(UQuest* OwningQuest)
+{
+	Quest = OwningQuest;
+}
+
 bool UQuestObjective::IsObjectiveStatusBlocked(const FProgressStatusBlockFlags& Flags)
 {
 	return (ObjectiveStatus == EProgressStatus::Locked && Flags.bBlockLocked) ||
@@ -151,5 +156,5 @@ void UQuestObjective::OnObjectiveUpdated_Implementation()
 {
 	UCustomFunctionLibrary::GetQuestManager(this)->OnAnyObjectiveUpdated.Broadcast(this);
 	TimeLastUpdated = FDateTime::UtcNow();
-	OwningQuest->OnQuestUpdated();
+	Quest->OnQuestUpdated();
 }

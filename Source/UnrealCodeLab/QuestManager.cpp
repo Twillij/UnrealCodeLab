@@ -43,6 +43,19 @@ TArray<UQuest*> UQuestManager::GetQuestsByStatus(EProgressStatus Status)
 	return filteredQuests;
 }
 
+UQuest* UQuestManager::GetQuestByClass(TSubclassOf<UQuest> QuestClass)
+{
+	for (UQuest* quest : Quests)
+	{
+		if (quest->GetClass() == QuestClass)
+		{
+			return quest;
+		}
+	}
+
+	return nullptr;
+}
+
 UQuest* UQuestManager::GetQuestByID(FName QuestID)
 {
 	for (UQuest* quest : Quests)
@@ -85,7 +98,7 @@ void UQuestManager::AddNewQuest(UQuest* NewQuest, bool bOverwriteDuplicateID)
 	}
 
 	Quests.Add(NewQuest);
-	NewQuest->Init();
+	NewQuest->Init(this);
 }
 
 void UQuestManager::TrackQuest(UQuest* Quest, bool bReplaceOldest)

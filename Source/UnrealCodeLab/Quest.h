@@ -5,6 +5,7 @@
 #include "PublicObjectTypes.h"
 #include "Quest.generated.h"
 
+class UQuestManager;
 class UQuestObjective;
 class UQuestRewards;
 
@@ -57,12 +58,13 @@ public:
 	FDateTime TimeLastCompleted;
 
 private:
+	UQuestManager* QuestManager;
 	EProgressStatus QuestStatus;
 	TArray<UQuestObjective*> Objectives;
 	TArray<UQuestObjective*> ActiveObjectiveGroup;
 
 public:
-	void Init();
+	void Init(UQuestManager* OwningQuestManager);
 
 	// Returns true if the current quest status is being flagged to ignore.
 	bool IsQuestStatusBlocked(const FProgressStatusBlockFlags& Flags);
@@ -72,6 +74,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	UQuestObjective* GetObjectiveByID(FName ObjectiveID);
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	UQuestObjective* GetObjectiveByClass(TSubclassOf<UQuestObjective> ObjectiveClass);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	const TArray<UQuestObjective*>& GetObjectives();
@@ -88,6 +93,9 @@ public:
 	// Sets the active objective group if there is at least one objective of the passed group index.
 	// * bHideInactiveGroup = Sets all other objectives as hidden if set to true. Default value is true.
 	void SetActiveObjectiveGroup(int GroupIndex, bool bHideInactiveGroups = true);
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	bool HasQuestManager();
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Convenience function that calls the appropriate status changing function depending on the NewStatus passed.
