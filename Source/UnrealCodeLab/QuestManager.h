@@ -5,10 +5,10 @@
 #include "PublicObjectTypes.h"
 #include "QuestManager.generated.h"
 
-class AQuest;
+class UQuest;
 class UQuestObjective;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestUpdated, AQuest*, Quest);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestUpdated, UQuest*, Quest);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnObjectiveUpdated, UQuestObjective*, Objective);
 
 UCLASS()
@@ -63,23 +63,23 @@ public:
 	FOnObjectiveUpdated OnAnyObjectiveCompleted;
 
 private:
-	TArray<AQuest*> Quests;
-	TArray<AQuest*> TrackedQuests;
+	TArray<UQuest*> Quests;
+	TArray<UQuest*> TrackedQuests;
 
 public:
 	void Init();
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	const TArray<AQuest*>& GetAllQuests();
+	const TArray<UQuest*>& GetAllQuests();
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	const TArray<AQuest*>& GetTrackedQuests();
+	const TArray<UQuest*>& GetTrackedQuests();
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	TArray<AQuest*> GetQuestsByStatus(EProgressStatus Status);
+	TArray<UQuest*> GetQuestsByStatus(EProgressStatus Status);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	AQuest* GetQuestByID(FName QuestID);
+	UQuest* GetQuestByID(FName QuestID);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Returns true if quest ID exist in the quest list.
@@ -88,17 +88,17 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Adds a new quest to the manager's quest list, and performs any necessary initialisation.
 	// * bOverwriteDuplicateID = Whether the function overwrites any existing quest with the same ID.
-	void AddNewQuest(AQuest* NewQuest, bool bOverwriteDuplicateID = false);
+	void AddNewQuest(UQuest* NewQuest, bool bOverwriteDuplicateID = false);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	void TrackQuest(AQuest* Quest, bool bReplaceOldest = false);
+	void TrackQuest(UQuest* Quest, bool bReplaceOldest = false);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	const TArray<AQuest*>& SortQuestsByDisplayName();
+	const TArray<UQuest*>& SortQuestsByDisplayName();
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	const TArray<AQuest*>& SortQuestsByID();
+	const TArray<UQuest*>& SortQuestsByID();
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
-	const TArray<AQuest*>& SortQuestByStatus();
+	const TArray<UQuest*>& SortQuestByStatus();
 };

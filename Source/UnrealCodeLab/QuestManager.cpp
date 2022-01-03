@@ -18,21 +18,21 @@ void UQuestManager::Init()
 #endif
 }
 
-const TArray<AQuest*>& UQuestManager::GetAllQuests()
+const TArray<UQuest*>& UQuestManager::GetAllQuests()
 {
 	return Quests;
 }
 
-const TArray<AQuest*>& UQuestManager::GetTrackedQuests()
+const TArray<UQuest*>& UQuestManager::GetTrackedQuests()
 {
 	return TrackedQuests;
 }
 
-TArray<AQuest*> UQuestManager::GetQuestsByStatus(EProgressStatus Status)
+TArray<UQuest*> UQuestManager::GetQuestsByStatus(EProgressStatus Status)
 {
-	TArray<AQuest*> filteredQuests;
+	TArray<UQuest*> filteredQuests;
 
-	for (AQuest* quest : Quests)
+	for (UQuest* quest : Quests)
 	{
 		if (quest->GetQuestStatus() == Status)
 		{
@@ -43,9 +43,9 @@ TArray<AQuest*> UQuestManager::GetQuestsByStatus(EProgressStatus Status)
 	return filteredQuests;
 }
 
-AQuest* UQuestManager::GetQuestByID(FName QuestID)
+UQuest* UQuestManager::GetQuestByID(FName QuestID)
 {
-	for (AQuest* quest : Quests)
+	for (UQuest* quest : Quests)
 	{
 		if (quest->QuestID == QuestID)
 		{
@@ -58,7 +58,7 @@ AQuest* UQuestManager::GetQuestByID(FName QuestID)
 
 bool UQuestManager::DoesQuestIDExist(FName QuestID)
 {
-	for (AQuest* quest : Quests)
+	for (UQuest* quest : Quests)
 	{
 		if (quest->QuestID == QuestID)
 		{
@@ -69,9 +69,9 @@ bool UQuestManager::DoesQuestIDExist(FName QuestID)
 	return false;
 }
 
-void UQuestManager::AddNewQuest(AQuest* NewQuest, bool bOverwriteDuplicateID)
+void UQuestManager::AddNewQuest(UQuest* NewQuest, bool bOverwriteDuplicateID)
 {
-	if (AQuest* quest = GetQuestByID(NewQuest->QuestID))
+	if (UQuest* quest = GetQuestByID(NewQuest->QuestID))
 	{
 		if (bOverwriteDuplicateID)
 		{
@@ -85,9 +85,10 @@ void UQuestManager::AddNewQuest(AQuest* NewQuest, bool bOverwriteDuplicateID)
 	}
 
 	Quests.Add(NewQuest);
+	NewQuest->Init();
 }
 
-void UQuestManager::TrackQuest(AQuest* Quest, bool bReplaceOldest)
+void UQuestManager::TrackQuest(UQuest* Quest, bool bReplaceOldest)
 {
 	if (TrackedQuests.Num() >= MaxTrackedQuests)
 	{
@@ -105,7 +106,7 @@ void UQuestManager::TrackQuest(AQuest* Quest, bool bReplaceOldest)
 	TrackedQuests.Add(Quest);
 }
 
-const TArray<AQuest*>& UQuestManager::SortQuestsByDisplayName()
+const TArray<UQuest*>& UQuestManager::SortQuestsByDisplayName()
 {
 	// Use selection sort
 	for (int i = 0; i < Quests.Num(); ++i)
@@ -125,7 +126,7 @@ const TArray<AQuest*>& UQuestManager::SortQuestsByDisplayName()
 		if (i != smallest)
 		{
 			// Swap the index of the array elements
-			AQuest* temp = Quests[i];
+			UQuest* temp = Quests[i];
 			Quests[i] = Quests[smallest];
 			Quests[smallest] = temp;
 		}
@@ -134,7 +135,7 @@ const TArray<AQuest*>& UQuestManager::SortQuestsByDisplayName()
 	return Quests;
 }
 
-const TArray<AQuest*>& UQuestManager::SortQuestsByID()
+const TArray<UQuest*>& UQuestManager::SortQuestsByID()
 {
 	// Use selection sort
 	for (int i = 0; i < Quests.Num(); ++i)
@@ -152,7 +153,7 @@ const TArray<AQuest*>& UQuestManager::SortQuestsByID()
 		if (i != smallest)
 		{
 			// Swap the index of the array elements
-			AQuest* temp = Quests[i];
+			UQuest* temp = Quests[i];
 			Quests[i] = Quests[smallest];
 			Quests[smallest] = temp;
 		}
@@ -161,7 +162,7 @@ const TArray<AQuest*>& UQuestManager::SortQuestsByID()
 	return Quests;
 }
 
-const TArray<AQuest*>& UQuestManager::SortQuestByStatus()
+const TArray<UQuest*>& UQuestManager::SortQuestByStatus()
 {
 	// Use selection sort
 	for (int i = 0; i < Quests.Num(); ++i)
@@ -185,7 +186,7 @@ const TArray<AQuest*>& UQuestManager::SortQuestByStatus()
 		if (i != smallest)
 		{
 			// Swap the index of the array elements
-			AQuest* temp = Quests[i];
+			UQuest* temp = Quests[i];
 			Quests[i] = Quests[smallest];
 			Quests[smallest] = temp;
 		}

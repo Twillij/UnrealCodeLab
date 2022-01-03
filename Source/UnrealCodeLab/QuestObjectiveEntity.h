@@ -17,9 +17,9 @@ class UNREALCODELAB_API IQuestObjectiveEntity
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-	const TArray<UQuestObjective*>& GetRelatedQuestObjectives();
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	TArray<UQuestObjective*> GetRelatedQuestObjectives();
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool IsEntityActive();
 };

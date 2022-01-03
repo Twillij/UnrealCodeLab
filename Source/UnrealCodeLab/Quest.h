@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "UObject/NoExportTypes.h"
 #include "PublicObjectTypes.h"
 #include "Quest.generated.h"
 
@@ -9,7 +9,7 @@ class UQuestObjective;
 class UQuestRewards;
 
 UCLASS(Blueprintable)
-class UNREALCODELAB_API AQuest : public AActor
+class UNREALCODELAB_API UQuest : public UObject
 {
 	GENERATED_BODY()
 	
@@ -62,6 +62,8 @@ private:
 	TArray<UQuestObjective*> ActiveObjectiveGroup;
 
 public:
+	void Init();
+
 	// Returns true if the current quest status is being flagged to ignore.
 	bool IsQuestStatusBlocked(const FProgressStatusBlockFlags& Flags);
 
@@ -143,7 +145,4 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Quest")
 	void OnQuestCompleted();
-
-protected:
-	virtual void BeginPlay() override;
 };

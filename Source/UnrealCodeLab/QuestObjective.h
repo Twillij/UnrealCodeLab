@@ -5,7 +5,7 @@
 #include "PublicObjectTypes.h"
 #include "QuestObjective.generated.h"
 
-class AQuest;
+class UQuest;
 
 UENUM(BlueprintType)
 enum class EQuestObjectiveType : uint8
@@ -24,7 +24,7 @@ class UNREALCODELAB_API UQuestObjective : public UObject
 
 public:
 	UPROPERTY(BlueprintReadOnly)
-	AQuest* OwningQuest;
+	UQuest* OwningQuest;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FName ObjectiveID;
