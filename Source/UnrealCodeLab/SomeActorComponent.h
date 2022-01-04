@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "PublicObjectTypes.h"
 #include "SomeActorComponent.generated.h"
 
 class UQuest;
@@ -16,15 +17,13 @@ public:
 	USomeActorComponent();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-	TMap<TSubclassOf<UQuest>, TSubclassOf<UQuestObjective>> RelatedQuestObjectiveClasses;
-
-	UPROPERTY(BlueprintReadOnly)
-	TArray<UQuestObjective*> RelatedObjectives;
+	TArray<FQuestObjectiveInfo> RelatedObjectivesInfo;
 
 public:
 	virtual void BeginPlay() override;
 
 	void InitRelatedObjectives();
 
-	void AddRelatedObjective(UQuestObjective* ObjectivePtr);
+	UFUNCTION(BlueprintCallable)
+	void SetObjectiveByQuest(UQuest* NewQuest);
 };

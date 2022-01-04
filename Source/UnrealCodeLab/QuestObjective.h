@@ -63,6 +63,9 @@ public:
 	EProgressStatus GetObjectiveStatus();
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
+	FQuestObjectiveInfo GetObjectiveInfo();
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Convenience function that calls the appropriate status changing function depending on the NewStatus passed.
 	// Preliminarily returns false if NewStatus is the same as current objective status.
 	bool SetObjectiveStatus(EProgressStatus NewStatus, FProgressStatusBlockFlags Flags);

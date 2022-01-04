@@ -21,6 +21,9 @@ public:
 	int MaxTrackedQuests = 1;
 
 	UPROPERTY(BlueprintAssignable)
+	FOnQuestUpdated OnAnyQuestAdded;
+
+	UPROPERTY(BlueprintAssignable)
 	FOnQuestUpdated OnAnyQuestUpdated;
 
 	UPROPERTY(BlueprintAssignable)

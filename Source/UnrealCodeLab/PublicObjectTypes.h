@@ -4,6 +4,9 @@
 #include "UObject/NoExportTypes.h"
 #include "PublicObjectTypes.generated.h"
 
+class UQuest;
+class UQuestObjective;
+
 UENUM(BlueprintType)
 enum class EProgressStatus : uint8
 {
@@ -38,4 +41,32 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bBlockCompleted;
+};
+
+USTRUCT(BlueprintType)
+struct FQuestObjectiveInfo
+{
+	GENERATED_BODY()
+
+public:
+	FQuestObjectiveInfo() {}
+	FQuestObjectiveInfo(UQuestObjective* ObjectivePtr);
+
+	UPROPERTY(BlueprintReadOnly)
+	UQuest* Quest;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<UQuest> QuestClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FName QuestID;
+
+	UPROPERTY(BlueprintReadOnly)
+	UQuestObjective* Objective;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<UQuestObjective> ObjectiveClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FName ObjectiveID;
 };

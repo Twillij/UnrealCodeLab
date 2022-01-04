@@ -26,46 +26,53 @@ void USomeActorComponent::InitRelatedObjectives()
 		return;
 	}
 
-	for (auto questObjectiveClass : RelatedQuestObjectiveClasses)
+	bool bBindObjectiveSetter = false;
+
+	for (auto objectiveInfo : RelatedObjectivesInfo)
 	{
 		// Get quest ptr from the QuestManager.
-		UQuest* quest = questManager->GetQuestByClass(questObjectiveClass.Key);
+		UQuest* quest = questManager->GetQuestByClass(objectiveInfo.QuestClass);
 		
 		// Get objective ptr if Quest is not null, otherwise set objective as null.
-		UQuestObjective* objective = (quest) ? quest->GetObjectiveByClass(questObjectiveClass.Value) : nullptr;
+		UQuestObjective* objective = (quest) ? quest->GetObjectiveByClass(objectiveInfo.ObjectiveClass) : nullptr;
 
-		// If ptr is null, bind the ??? function to QuestManager's OnQuestStarted
-		objective = (objective) ? objective : NewObject<UQuestObjective>(this, questObjectiveClass.Value);
+		if (objective)
+		{
+			// If ptr exists, store the ptr to the objective info.
+			objectiveInfo.Objective = objective;
+		}
+		else
+		{
+			// If ptr is null, bind an objective setter function later.
+			bBindObjectiveSetter = true;
+		}
+	}
 
-		// Store the ptr to the array.
-		RelatedObjectives.Add(objective);
+	if (bBindObjectiveSetter)
+	{
+		// Set the objective ptrs when its quest is added to the QuestManager.
+		questManager->OnAnyQuestAdded.AddDynamic(this, &USomeActorComponent::SetObjectiveByQuest);
 	}
 }
 
-void USomeActorComponent::AddRelatedObjective(UQuestObjective* ObjectivePtr)
+void USomeActorComponent::SetObjectiveByQuest(UQuest* NewQuest)
 {
-	for (auto questObjectiveClass : RelatedQuestObjectiveClasses)
+	for (FQuestObjectiveInfo objectiveInfo : RelatedObjectivesInfo)
 	{
-		// If the objective ptr has a matching quest and objective ID with the stored classes...
-		if (ObjectivePtr->Quest->GetClass() == questObjectiveClass.Key && ObjectivePtr->GetClass() == questObjectiveClass.Value)
+		// If the objective ptr already exists, continue to the next objective info.
+		if (objectiveInfo.Objective)
 		{
-			bool bObjectiveExists = false;
+			continue;
+		}
 
-			// Check if the objective ptr already exists in this component's array.
-			for (UQuestObjective* objective : RelatedObjectives)
-			{
-				if (objective->Quest->QuestID == ObjectivePtr->Quest->QuestID && objective->ObjectiveID == ObjectivePtr->ObjectiveID)
-				{
-					bObjectiveExists = true;
-					break;
-				}
-			}
+		// If the objective has the same quest class as the new quest...
+		if (objectiveInfo.QuestClass == NewQuest->GetClass())
+		{
+			// Try to find a matching objective from the quest.
+			UQuestObjective* objective = NewQuest->GetObjectiveByClass(objectiveInfo.ObjectiveClass);
 
-			// If the objective does not already exist, store it in the array.
-			if (!bObjectiveExists)
-			{
-				RelatedObjectives.Add(ObjectivePtr);
-			}
+			// If a matching objective is found, set it as the new objective ptr.
+			objectiveInfo.Objective = (objective) ? objective : nullptr;
 		}
 	}
 }

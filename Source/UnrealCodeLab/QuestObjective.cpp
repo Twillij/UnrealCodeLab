@@ -23,6 +23,11 @@ EProgressStatus UQuestObjective::GetObjectiveStatus()
 	return ObjectiveStatus;
 }
 
+FQuestObjectiveInfo UQuestObjective::GetObjectiveInfo()
+{
+	return FQuestObjectiveInfo(this);
+}
+
 bool UQuestObjective::SetObjectiveStatus(EProgressStatus NewStatus, FProgressStatusBlockFlags Flags)
 {
 	if (ObjectiveStatus == NewStatus)

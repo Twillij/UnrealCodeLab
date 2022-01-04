@@ -99,6 +99,7 @@ void UQuestManager::AddNewQuest(UQuest* NewQuest, bool bOverwriteDuplicateID)
 
 	Quests.Add(NewQuest);
 	NewQuest->Init(this);
+	OnAnyQuestAdded.Broadcast(NewQuest);
 }
 
 void UQuestManager::TrackQuest(UQuest* Quest, bool bReplaceOldest)
