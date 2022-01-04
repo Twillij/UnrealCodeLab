@@ -91,6 +91,21 @@ TArray<UQuestObjective*> UQuest::GetObjectivesByGroupIndex(int Index, bool bEqua
 	return groupedObjectives;
 }
 
+TArray<UQuestObjective*> UQuest::GetObjectivesByStatus(EProgressStatus ObjectiveStatus)
+{
+	TArray<UQuestObjective*> filteredObjectives;
+
+	for (UQuestObjective* objective : Objectives)
+	{
+		if (objective->GetObjectiveStatus() == ObjectiveStatus)
+		{
+			filteredObjectives.Add(objective);
+		}
+	}
+
+	return filteredObjectives;
+}
+
 void UQuest::SetActiveObjectiveGroup(int GroupIndex, bool bHideInactiveGroups)
 {
 	if (GroupIndex < 0)

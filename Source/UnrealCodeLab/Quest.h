@@ -25,6 +25,12 @@ public:
 	FText QuestDescription;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+	FText QuestGiverName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+	FText QuestAreaName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	bool bIsHidden;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
@@ -88,6 +94,9 @@ public:
 	// Returns an array of objectives with the passed group index if bEqualsIndex is true.
 	// * bEqualsIndex = If set to false, function returns all objectives with different group index. Default value is true.
 	TArray<UQuestObjective*> GetObjectivesByGroupIndex(int Index, bool bEqualsIndex = true);
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	TArray<UQuestObjective*> GetObjectivesByStatus(EProgressStatus ObjectiveStatus);
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")
 	// Sets the active objective group if there is at least one objective of the passed group index.

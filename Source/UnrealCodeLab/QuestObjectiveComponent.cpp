@@ -55,6 +55,47 @@ void UQuestObjectiveComponent::InitRelatedObjectives()
 	}
 }
 
+UQuestObjective* UQuestObjectiveComponent::GetObjectiveByClass(TSubclassOf<UQuestObjective> ObjectiveClass)
+{
+	for (FQuestObjectiveInfo objectiveInfo : RelatedObjectivesInfo)
+	{
+		if (objectiveInfo.Objective->GetClass() == ObjectiveClass)
+		{
+			return objectiveInfo.Objective;
+		}
+	}
+
+	return nullptr;
+}
+
+UQuestObjective* UQuestObjectiveComponent::GetObjectiveByID(FName ObjectiveID)
+{
+	for (FQuestObjectiveInfo objectiveInfo : RelatedObjectivesInfo)
+	{
+		if (objectiveInfo.Objective->ObjectiveID == ObjectiveID)
+		{
+			objectiveInfo.Objective;
+		}
+	}
+
+	return nullptr;
+}
+
+TArray<UQuestObjective*> UQuestObjectiveComponent::GetObjectivesByStatus(EProgressStatus ObjectiveStatus)
+{
+	TArray<UQuestObjective*> filteredObjectives;
+
+	for (FQuestObjectiveInfo objectiveInfo : RelatedObjectivesInfo)
+	{
+		if (objectiveInfo.Objective->GetObjectiveStatus() == ObjectiveStatus)
+		{
+			filteredObjectives.Add(objectiveInfo.Objective);
+		}
+	}
+
+	return filteredObjectives;
+}
+
 void UQuestObjectiveComponent::SetObjectivesByQuest(UQuest* NewQuest)
 {
 	for (FQuestObjectiveInfo objectiveInfo : RelatedObjectivesInfo)

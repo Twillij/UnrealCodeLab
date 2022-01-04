@@ -16,7 +16,7 @@ class UNREALCODELAB_API UQuestObjectiveComponent : public UActorComponent
 public:	
 	UQuestObjectiveComponent();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Quest")
 	TArray<FQuestObjectiveInfo> RelatedObjectivesInfo;
 
 public:
@@ -24,6 +24,15 @@ public:
 
 	void InitRelatedObjectives();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	UQuestObjective* GetObjectiveByClass(TSubclassOf<UQuestObjective> ObjectiveClass);
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	UQuestObjective* GetObjectiveByID(FName ObjectiveID);
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
+	TArray<UQuestObjective*> GetObjectivesByStatus(EProgressStatus ObjectiveStatus);
+
+	UFUNCTION(BlueprintCallable, Category = "Quest")
 	void SetObjectivesByQuest(UQuest* NewQuest);
 };

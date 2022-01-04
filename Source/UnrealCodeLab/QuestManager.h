@@ -20,11 +20,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "0"))
 	int MaxTrackedQuests = 1;
 
-	UPROPERTY(BlueprintAssignable)
-	FOnQuestUpdated OnAnyQuestAdded;
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnQuestUpdated OnAnyQuestUpdated;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnQuestUpdated OnAnyQuestUpdated;
+	FOnQuestUpdated OnAnyQuestAdded;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnQuestUpdated OnAnyQuestLocked;
@@ -44,7 +44,7 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnQuestUpdated OnAnyQuestCompleted;
 
-	UPROPERTY(BlueprintAssignable)
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnObjectiveUpdated OnAnyObjectiveUpdated;
 
 	UPROPERTY(BlueprintAssignable)
