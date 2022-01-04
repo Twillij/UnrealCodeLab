@@ -1,22 +1,22 @@
-#include "SomeActorComponent.h"
+#include "QuestObjectiveComponent.h"
 #include "CustomFunctionLibrary.h"
 #include "Quest.h"
 #include "QuestManager.h"
 #include "QuestObjective.h"
 
-USomeActorComponent::USomeActorComponent()
+UQuestObjectiveComponent::UQuestObjectiveComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void USomeActorComponent::BeginPlay()
+void UQuestObjectiveComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
 	InitRelatedObjectives();
 }
 
-void USomeActorComponent::InitRelatedObjectives()
+void UQuestObjectiveComponent::InitRelatedObjectives()
 {
 	UQuestManager* questManager = UCustomFunctionLibrary::GetQuestManager(this);
 
@@ -51,11 +51,11 @@ void USomeActorComponent::InitRelatedObjectives()
 	if (bBindObjectiveSetter)
 	{
 		// Set the objective ptrs when its quest is added to the QuestManager.
-		questManager->OnAnyQuestAdded.AddDynamic(this, &USomeActorComponent::SetObjectiveByQuest);
+		questManager->OnAnyQuestAdded.AddDynamic(this, &UQuestObjectiveComponent::SetObjectivesByQuest);
 	}
 }
 
-void USomeActorComponent::SetObjectiveByQuest(UQuest* NewQuest)
+void UQuestObjectiveComponent::SetObjectivesByQuest(UQuest* NewQuest)
 {
 	for (FQuestObjectiveInfo objectiveInfo : RelatedObjectivesInfo)
 	{

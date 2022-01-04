@@ -3,18 +3,18 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "PublicObjectTypes.h"
-#include "SomeActorComponent.generated.h"
+#include "QuestObjectiveComponent.generated.h"
 
 class UQuest;
 class UQuestObjective;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class UNREALCODELAB_API USomeActorComponent : public UActorComponent
+class UNREALCODELAB_API UQuestObjectiveComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
-	USomeActorComponent();
+	UQuestObjectiveComponent();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	TArray<FQuestObjectiveInfo> RelatedObjectivesInfo;
@@ -25,5 +25,5 @@ public:
 	void InitRelatedObjectives();
 
 	UFUNCTION(BlueprintCallable)
-	void SetObjectiveByQuest(UQuest* NewQuest);
+	void SetObjectivesByQuest(UQuest* NewQuest);
 };
