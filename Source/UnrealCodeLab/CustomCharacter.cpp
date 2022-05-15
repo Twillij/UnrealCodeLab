@@ -49,7 +49,7 @@ void ACustomCharacter::GainAbility(TSubclassOf<UGameplayAbility> Ability)
 	{
 		if (Ability && HasAuthority())
 		{
-			AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(Ability));
+			//AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(Ability, 1, static_cast<int32>(Ability.GetDefaultObject()->AbilityInputID), this));
 		}
 
 		AbilitySystemComponent->InitAbilityActorInfo(this, this);

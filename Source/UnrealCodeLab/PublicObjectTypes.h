@@ -8,6 +8,14 @@ class UQuest;
 class UQuestObjective;
 
 UENUM(BlueprintType)
+enum class EAbilityInputID : uint8
+{
+	None,
+	Confirm,
+	Cancel
+};
+
+UENUM(BlueprintType)
 enum class EProgressStatus : uint8
 {
 	Locked,

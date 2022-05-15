@@ -74,6 +74,17 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 
 	// VR headset functionality
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &APlayerCharacter::OnResetVR);
+
+	FGameplayAbilityInputBinds abilityInputBinds = FGameplayAbilityInputBinds(
+		"ConfirmTarget",
+		"CancelTarget",
+		"EAbilityInputID",
+		static_cast<int32>(EAbilityInputID::Confirm),
+		static_cast<int32>(EAbilityInputID::Cancel)
+	);
+
+	// Bind input to ASC
+	AbilitySystemComponent->BindAbilityActivationToInputComponent(PlayerInputComponent, abilityInputBinds);
 }
 
 

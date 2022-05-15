@@ -4,12 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "CustomCharacter.h"
+#include "PublicObjectTypes.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS(config=Game)
 class APlayerCharacter : public ACustomCharacter
 {
 	GENERATED_BODY()
+
+public:
+	APlayerCharacter();
 
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -18,11 +22,9 @@ class APlayerCharacter : public ACustomCharacter
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
-public:
-	APlayerCharacter();
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	float BaseTurnRate;
 
 	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
@@ -30,7 +32,6 @@ public:
 	float BaseLookUpRate;
 
 protected:
-
 	/** Resets HMD orientation in VR. */
 	void OnResetVR();
 
@@ -58,7 +59,6 @@ protected:
 	/** Handler for when a touch input stops. */
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 
-protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	// End of APawn interface
