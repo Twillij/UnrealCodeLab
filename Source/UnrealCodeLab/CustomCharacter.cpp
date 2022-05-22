@@ -1,4 +1,5 @@
 #include "CustomCharacter.h"
+#include "CustomGameplayAbility.h"
 
 // Sets default values
 ACustomCharacter::ACustomCharacter()
@@ -43,13 +44,13 @@ void ACustomCharacter::OnManaChanged(float Mana, float MaxMana)
 	BP_OnManaChanged(Mana, MaxMana);
 }
 
-void ACustomCharacter::GainAbility(TSubclassOf<UGameplayAbility> Ability)
+void ACustomCharacter::GainAbility(TSubclassOf<UCustomGameplayAbility> Ability)
 {
 	if (AbilitySystemComponent)
 	{
 		if (Ability && HasAuthority())
 		{
-			//AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(Ability, 1, static_cast<int32>(Ability.GetDefaultObject()->AbilityInputID), this));
+			AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(Ability, 1, static_cast<int32>(Ability.GetDefaultObject()->AbilityInputID), this));
 		}
 
 		AbilitySystemComponent->InitAbilityActorInfo(this, this);

@@ -12,7 +12,9 @@ enum class EAbilityInputID : uint8
 {
 	None,
 	Confirm,
-	Cancel
+	Cancel,
+	Trigger,
+	Hotkey1
 };
 
 UENUM(BlueprintType)

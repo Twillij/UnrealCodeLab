@@ -52,7 +52,7 @@ public:
 
 	// Grants the ability system component an ability
 	UFUNCTION(BlueprintCallable)
-	void GainAbility(TSubclassOf<UGameplayAbility> Ability);
+	void GainAbility(TSubclassOf<UCustomGameplayAbility> Ability);
 
 	// Blueprint implementable events that are called when certain gameplay attributes are changed
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnHealthChanged"))
